@@ -1,0 +1,10 @@
+all possible events:
+
+- degree one selected
+- degree two selected
+- degree three selected
+
+- first tile selected
+- second tile selected
+- shuffle
+- 
