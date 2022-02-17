@@ -8,7 +8,7 @@ import 'package:polynom_puzzle/logic/models/poly_part.dart';
 
 class SlideTile extends StatelessWidget {
   final FunctionPart part;
-  Color color = FunctionColors.two;
+  Color color = FunctionColors.three;
   SlideTile(
       {
       required this.part,
@@ -22,8 +22,8 @@ class SlideTile extends StatelessWidget {
         if(state.puzzle.isPartOfFunction(part)){
           color = FunctionColors.one;
         }
-        else if(state.selectedPart != null && state.selectedPart!.id == part.id){
-          color = Colors.black;
+        if(state.selectedPart != null && state.selectedPart!.id == part.id){
+          color = FunctionColors.two;
         }
         return Container(width: 100, height: 100,margin: const EdgeInsets.all(10,),
           child: ElevatedButton(

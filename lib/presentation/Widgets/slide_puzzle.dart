@@ -10,19 +10,36 @@ class SlidePuzzle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PuzzleCubit, PuzzleState>(
+    return BlocConsumer<PuzzleCubit, PuzzleState>(
+      listener: (context, state) {
+        if(state.puzzle.isSolved()){
+        showDialog(
+          context: context,
+          builder: (context) {
+            return solvedDialog();
+          },
+        );}
+      },
       builder: (context, state) {
-        print("hello");
-        return Container(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            for(List<FunctionPart> partRow in state.puzzle.asTwoDimList()) Row(children: [for(FunctionPart part in partRow) SlideTile(part: part)],)
+            for (List<FunctionPart> partRow in state.puzzle.asTwoDimList())
+              Row(
+                children: [
+                  for (FunctionPart part in partRow) SlideTile(part: part)
+                ],
+              )
             // TileRow(functionName: "f(x)", tiles: state.puzzle.getRow(0), color: FunctionColors.one,),
             // TileRow(functionName: "g(x)", tiles: state.puzzle.getRow(1), color: FunctionColors.two,),
             // TileRow(functionName: "h(x)", tiles: state.puzzle.getRow(2), color: FunctionColors.three,),
           ],
-        ));
+        );
       },
     );
+  }
+
+  solvedDialog() {
+    return AlertDialog();
   }
 }

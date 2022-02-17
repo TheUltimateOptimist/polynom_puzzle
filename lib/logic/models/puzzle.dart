@@ -31,7 +31,13 @@ abstract class Puzzle{
   List<List<FunctionPart>> asTwoDimList(){
     List<List<FunctionPart>> result = List.empty(growable: true);
     for(int i = 0; i < parts.length; i+=dimensions){
-      result.add(parts.sublist(i, (i + 1)*dimensions));
+      result.add(parts.sublist(i, i + dimensions));
+      // if(i + dimensions + 1 < parts.length){
+      //   result.add(parts.sublist(i, i + dimensions + 1)); 
+      // }
+      // else {
+      //   result.add(parts.sublist(i));
+      // }
     }
     return result;
    }

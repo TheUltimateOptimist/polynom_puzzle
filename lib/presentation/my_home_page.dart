@@ -5,6 +5,8 @@ import 'package:polynom_puzzle/presentation/Widgets/degree_select_button.dart';
 import 'package:polynom_puzzle/presentation/Widgets/moves.dart';
 import 'package:polynom_puzzle/presentation/Widgets/slide_puzzle.dart';
 
+import 'Widgets/shuffle_button.dart';
+
 class MyHomePage extends StatelessWidget {
   final String title;
   const MyHomePage({required this.title, Key? key}) : super(key: key);
@@ -39,7 +41,7 @@ class MyHomePage extends StatelessWidget {
                 ),
               const BlackText(title: "Change two tiles by selecting them", fontSize: 30, fontFamily: "Noteworthy-Light"),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: const [SlidePuzzle(), CoordinateSystem()/*const Visualization()*/],),
-              //Row(children: [const ShuffleButton()],)
+              Row(mainAxisAlignment: MainAxisAlignment.end,children: const [ShuffleButton()],)
             ],
           ),
         ),
