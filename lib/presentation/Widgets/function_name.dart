@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 
 class FunctionName extends StatelessWidget {
   final String name;
@@ -14,7 +15,7 @@ class FunctionName extends StatelessWidget {
         name,
         textStyle: TextStyle(
           color: color,
-          fontSize: 30,
+          fontSize: Sizes.functionTextSize(),
         ),
       ),
     );

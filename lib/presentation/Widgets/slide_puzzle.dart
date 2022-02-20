@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
 import 'package:polynom_puzzle/logic/models/function_part.dart';
@@ -76,8 +77,8 @@ class SlidePuzzle extends StatelessWidget {
   solvedDialog(BuildContext context) {
     return Dialog(
       insetPadding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width / 2 - 250,
-        vertical: MediaQuery.of(context).size.height / 2 - 250,
+        horizontal: Sizes.onMobile ? 40 : MediaQuery.of(context).size.width / 2 - 250,
+        vertical: Sizes.onMobile ? 240 : MediaQuery.of(context).size.height / 2 - 250,
       ),
       alignment: Alignment.center,
       shape: RoundedRectangleBorder(
@@ -96,7 +97,7 @@ class SlidePuzzle extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Congratulatios!",
+              "Congratulations!",
               style: TextStyle(
                 color: FunctionColors.one,
                 fontSize: 45,
@@ -118,17 +119,17 @@ class SlidePuzzle extends StatelessWidget {
               ],
             ),
             Container(
-              height: 40,
+              height: Sizes.onMobile ? 30 : 40,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ActionButton(
-                  child: const Text(
+                  child:  Text(
                     "Back",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 30,
+                        fontSize: Sizes.buttonTextSize(),
                         fontFamily: "Noteworthy-Light"),
                   ),
                   onPressed: () {
@@ -136,7 +137,7 @@ class SlidePuzzle extends StatelessWidget {
                   },
                 ),
                 Container(
-                  width: 10,
+                  width: Sizes.onMobile ? 5 : 10,
                 ),
                 ShuffleButton(
                   onPressed: () {

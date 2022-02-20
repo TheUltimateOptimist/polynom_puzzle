@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
 import 'package:polynom_puzzle/presentation/Widgets/black_text.dart';
 import 'package:polynom_puzzle/presentation/Widgets/coordinate_system/coordinate_system.dart';
@@ -19,6 +20,7 @@ class MyHomePage extends StatelessWidget {
     return BlocBuilder<PuzzleCubit, PuzzleState>(
       builder: (context, state) {
         return LayoutBuilder(builder: (context, constraints) {
+          bool onMobile = false;
           late double puzzleHeight;
           late double systemHeight;
           if(constraints.maxWidth > 1210){
@@ -34,10 +36,17 @@ class MyHomePage extends StatelessWidget {
             systemHeight = 400;
           }
           else{
-            
+            Sizes.onMobile = true;
+            puzzleHeight = 250;
+            systemHeight = 250;
+            onMobile = true;
           }
+          Sizes.onMobile = onMobile;
           double aroundMargin = (constraints.maxWidth - puzzleHeight - systemHeight - 10)/2;
           aroundMargin-=aroundMargin/6;
+          if(onMobile){
+            aroundMargin = 5;
+          }
 
           return SafeArea(
             child: Scaffold(
@@ -51,26 +60,24 @@ class MyHomePage extends StatelessWidget {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: onMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children:  [
                             BlackText(
                               title: "PolynomPuzzle",
-                              fontSize: 48,
+                              fontSize: Sizes.titleSize(),
                             ),
                             Moves(
-                              fontSize: 20,
+                              fontSize: Sizes.movesTextSize(),
                             ),
                           ],
                         ),
-                        Container(
-                          width: 100,
-                        ),
+                  
                         Row(
                           children: const [
                             DegreeSelectButton(
@@ -86,10 +93,11 @@ class MyHomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const BlackText(
+                     BlackText(
                         title: "Change two tiles by selecting them",
-                        fontSize: 30,
+                        fontSize: Sizes.explanationTextSize(),
                         fontFamily: "Noteworthy-Light"),
+                        !onMobile ?
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -103,7 +111,14 @@ class MyHomePage extends StatelessWidget {
                           height: systemHeight,
                         ) /*const Visualization()*/
                       ],
-                    ),
+                    ) : SlidePuzzle(
+                          cubit: context.read<PuzzleCubit>(),
+                          height: puzzleHeight,
+                          tileMargin: puzzleHeight / 50,
+                        ),
+                        onMobile? CoordinateSystem(
+                          height: systemHeight,
+                        ) : const Text(""),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

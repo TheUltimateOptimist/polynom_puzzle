@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
 import 'package:polynom_puzzle/presentation/Widgets/action_button.dart';
@@ -14,17 +15,17 @@ class ShuffleButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.replay_outlined, size: 30, color: Colors.white),
+           Icon(Icons.replay_outlined, size: Sizes.buttonTextSize(), color: Colors.white),
           Container(
             margin: const EdgeInsets.only(
               bottom: 6,
               left: 3,
             ),
-            child: const Text(
+            child: Text(
               "Shuffle",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 30,
+                  fontSize: Sizes.buttonTextSize(),
                   fontFamily: "Noteworthy-Light"),
             ),
           )

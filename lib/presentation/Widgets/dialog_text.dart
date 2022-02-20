@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/function_colors.dart';
 
 class DialogText extends StatelessWidget {
@@ -12,7 +13,7 @@ class DialogText extends StatelessWidget {
         text,
         style: TextStyle(
           color: FunctionColors.three,
-          fontSize: 30,
+          fontSize: Sizes.dialogInfoSize(),
           fontFamily: "Noteworthy-Light",
         ),
       ),

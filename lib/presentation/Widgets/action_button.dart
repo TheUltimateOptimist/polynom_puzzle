@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
 
@@ -15,9 +16,9 @@ class ActionButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         primary: FunctionColors.one,
-        fixedSize: const Size(
-          150,
-          60,
+        fixedSize: Size(
+          Sizes.onMobile ? Sizes.buttonHeight()*3.5 : 2.7*Sizes.buttonHeight(),
+          Sizes.buttonHeight(),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(

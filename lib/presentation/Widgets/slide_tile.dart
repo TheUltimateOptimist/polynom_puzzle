@@ -29,7 +29,7 @@ class SlideTile extends StatelessWidget {
           color = FunctionColors.two;
         }
         return SizedBox(width: height, height: height,
-          child: ElevatedButton(
+          child: TextButton(
             style: ElevatedButton.styleFrom(
               primary: color,
               shape: const RoundedRectangleBorder(
@@ -42,9 +42,9 @@ class SlideTile extends StatelessWidget {
             ),
             child: Math.tex(
                ((part as PolyPart).scalar < 0 ? "-" : "+") + part.toString(),
-              textStyle: const TextStyle(
+              textStyle:  TextStyle(
                 color: Colors.white,
-                fontSize: 25,
+                fontSize: height / 4,
               ),
             ),
             onPressed: (){final puzzleCubit = context.read<PuzzleCubit>();
