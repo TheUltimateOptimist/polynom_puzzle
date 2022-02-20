@@ -21,6 +21,14 @@ class PolynomialFunction extends PuzzleFunction{
   @override
   String toString() {
     String result = "";
+    for(int i = 0; i < polyParts.length; i++){
+      for(int j = i + 1; j < polyParts.length; j++){
+        while(j < polyParts.length && polyParts[j].degree == polyParts[i].degree){
+          polyParts[i] = PolyPart(scalar: polyParts[i].scalar + polyParts[j].scalar, degree: polyParts[i].degree, id: 100,);
+          polyParts.removeAt(j);
+        }
+      }
+    }
     for(PolyPart polyPart in polyParts){
       if(polyPart.degree != 0 && polyPart.scalar != 0){
         if(result.isEmpty){
