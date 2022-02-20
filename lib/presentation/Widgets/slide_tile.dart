@@ -6,12 +6,15 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:polynom_puzzle/logic/models/function_part.dart';
 import 'package:polynom_puzzle/logic/models/poly_part.dart';
 
+// ignore: must_be_immutable
 class SlideTile extends StatelessWidget {
   final FunctionPart part;
+  final double height;
   Color color = FunctionColors.three;
   SlideTile(
       {
       required this.part,
+      required this.height,
       Key? key})
       : super(key: key);
 
@@ -25,7 +28,7 @@ class SlideTile extends StatelessWidget {
         if(state.selectedPart != null && state.selectedPart!.id == part.id){
           color = FunctionColors.two;
         }
-        return Container(width: 100, height: 100,margin: const EdgeInsets.all(10,),
+        return SizedBox(width: height, height: height,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: color,

@@ -31,10 +31,8 @@ class FunctionPainter extends CustomPainter {
       functionPaint.color = FunctionColors.one;
     }
     for (int i = 0; i < numberOfLines; i++) {
-      canvas.drawLine(
-        Offset(
-          i * distance,
-          toUIY(
+      double startX = i * distance;
+      double startY = toUIY(
             function.getY(
               toFuncX(
                 i * distance,
@@ -42,11 +40,9 @@ class FunctionPainter extends CustomPainter {
               ),
             ),
             size,
-          ),
-        ),
-        Offset(
-          (i + 1) * distance,
-          toUIY(
+          );
+      double endX = (i + 1) * distance;
+      double endY = toUIY(
             function.getY(
               toFuncX(
                 (i + 1) * distance,
@@ -54,10 +50,19 @@ class FunctionPainter extends CustomPainter {
               ),
             ),
             size,
-          ),
+          );
+      if(endY <= size.height && startY <= size.height && endY >= 0 && startY >= 0){
+      canvas.drawLine(
+        Offset(
+          startX,
+          startY,
+        ),
+        Offset(
+          endX,
+          endY,
         ),
         functionPaint,
-      );
+      );}
     }
   }
 

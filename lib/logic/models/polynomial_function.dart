@@ -22,7 +22,15 @@ class PolynomialFunction extends PuzzleFunction{
   String toString() {
     String result = "";
     for(PolyPart polyPart in polyParts){
-      if(polyPart.degree != 0){
+      if(polyPart.degree != 0 && polyPart.scalar != 0){
+        if(result.isEmpty){
+          result+=polyPart.scalar < 0 ? ("-" + polyPart.toString()) : polyPart.toString();
+        }
+        else{
+          result+=polyPart.scalar < 0 ? (" - " + polyPart.toString()) : (" + " + polyPart.toString());
+        }
+      }
+      else if(polyPart.scalar != 0){
         if(result.isEmpty){
           result+=polyPart.scalar < 0 ? ("-" + polyPart.toString()) : polyPart.toString();
         }

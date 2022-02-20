@@ -6,8 +6,8 @@ import 'package:polynom_puzzle/presentation/Widgets/coordinate_system/coordinate
 import 'function_painter.dart';
 
 class CoordinateSystem extends StatelessWidget {
-  const CoordinateSystem({Key? key}) : super(key: key);
-  static double height = 600;
+  const CoordinateSystem({required this.height, Key? key}) : super(key: key);
+  final double height;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PuzzleCubit, PuzzleState>(

@@ -14,7 +14,7 @@ class FunctionName extends StatelessWidget {
         name,
         textStyle: TextStyle(
           color: color,
-          fontSize: 25,
+          fontSize: 30,
         ),
       ),
     );

@@ -4,15 +4,20 @@ import 'package:polynom_puzzle/logic/models/function_part.dart';
 
 class PolyPart extends FunctionPart{
   static const int maxScalar = 5;
-  late final int scalar;
+  late final double scalar;
   late final int degree;
 
   PolyPart({required this.scalar, required this.degree, required int id}) : super(id: id);
 
   PolyPart.random({required int id, required this.degree, canBeZero = true}) : super(id: id){
-    late int randScalar;
+    late  double randScalar;
+    Random rand = Random();
     do{
-      randScalar = Random().nextInt(2*maxScalar + 1) - maxScalar;
+      randScalar = (rand.nextInt(2*maxScalar + 1) - maxScalar).toDouble();
+      if(rand.nextInt(2) == 0 && randScalar.abs() > 1){
+        double m = (1/randScalar)*10;
+        randScalar =  m < 0 ? m.floor()/10 : m.ceil() / 10;
+      }
     }
     while(!canBeZero && randScalar == 0);
     scalar = randScalar;
