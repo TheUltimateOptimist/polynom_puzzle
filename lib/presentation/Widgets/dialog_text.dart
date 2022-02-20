@@ -8,14 +8,12 @@ class DialogText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        text,
-        style: TextStyle(
-          color: FunctionColors.three,
-          fontSize: Sizes.dialogInfoSize(),
-          fontFamily: "Noteworthy-Light",
-        ),
+    return Text(
+      text,
+      style: TextStyle(
+        color: FunctionColors.three,
+        fontSize: Sizes.dialogInfoSize(),
+        fontFamily: "Noteworthy-Light",
       ),
     );
   }

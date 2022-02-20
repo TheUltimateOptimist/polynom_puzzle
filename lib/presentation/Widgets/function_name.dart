@@ -10,13 +10,11 @@ class FunctionName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Math.tex(
-        name,
-        textStyle: TextStyle(
-          color: color,
-          fontSize: Sizes.functionTextSize(),
-        ),
+    return Math.tex(
+      name,
+      textStyle: TextStyle(
+        color: color,
+        fontSize: Sizes.functionTextSize(),
       ),
     );
   }

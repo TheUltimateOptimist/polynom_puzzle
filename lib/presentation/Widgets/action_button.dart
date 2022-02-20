@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/function_colors.dart';
-import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
 
 class ActionButton extends StatelessWidget {
   final void Function() onPressed;

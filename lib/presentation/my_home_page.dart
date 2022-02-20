@@ -16,7 +16,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
     return BlocBuilder<PuzzleCubit, PuzzleState>(
       builder: (context, state) {
         return LayoutBuilder(builder: (context, constraints) {
