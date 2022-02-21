@@ -1,5 +1,23 @@
+import 'package:polynom_puzzle/logic/models/puzzle.dart';
+
 class Sizes{
   static bool onMobile = false;
+
+  //returns true if the newValue is not equal to the old value
+ static bool setOnMobile(bool newValue){
+    if(onMobile && !newValue){
+      onMobile = newValue;
+      Puzzle.coumnLength = 4;
+      return true;
+    }
+    else if(!onMobile && newValue){
+      onMobile = newValue;
+      Puzzle.coumnLength = 3;
+      return true;
+    }
+    return false;
+  }
+  
   static double titleSize(){
     return onMobile ? 35 : 48;
   }

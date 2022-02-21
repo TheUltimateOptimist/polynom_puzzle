@@ -4,6 +4,7 @@ import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
 import 'package:polynom_puzzle/logic/models/function_part.dart';
+import 'package:polynom_puzzle/logic/models/puzzle.dart';
 import 'package:polynom_puzzle/presentation/Widgets/action_button.dart';
 import 'package:polynom_puzzle/presentation/Widgets/dialog_text.dart';
 import 'package:polynom_puzzle/presentation/Widgets/shuffle_button.dart';
@@ -37,18 +38,18 @@ class SlidePuzzle extends StatelessWidget {
       },
       builder: (context, state) {
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: Sizes.onMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
           children: [
             Container(
                 margin: EdgeInsets.only(
-                  left: 10,bottom: 4*tileMargin/3,
-                ),
+                  left: Sizes.onMobile ? 0 : 10,bottom: 4*tileMargin/3,
+               ),
                 child: FunctionName(
                     color: FunctionColors.one,
                     name: "f(x) = " +
                         state.puzzle.getCurrentFunction().toString())),
             SizedBox(
-              width: height,
+              width: Sizes.onMobile ? height/3*4 : height,
               height: height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +62,7 @@ class SlidePuzzle extends StatelessWidget {
                         for (FunctionPart part in partRow)
                           SlideTile(
                             part: part,
-                            height: height / 4 - tileMargin,
+                            height: height / Puzzle.coumnLength - tileMargin,
                           ),
                       ],
                     ),

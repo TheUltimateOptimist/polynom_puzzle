@@ -21,9 +21,9 @@ class PolynomialPuzzle extends Puzzle {
 
     List<FunctionPart> _getRandomParts(){
       List<FunctionPart> randomParts = List.empty(growable: true);
-      for(int i = 0; i < Puzzle.dimensions; i++){
-        for(int j = 0; j < Puzzle.dimensions; j++){
-          randomParts.add(PolyPart.random(id: i*Puzzle.dimensions + j,degree: degree - j >= 0 ? degree - j : randomDegree(), canBeZero: j == 0 ? false : true),);
+      for(int i = 0; i < Puzzle.coumnLength; i++){
+        for(int j = 0; j < Puzzle.rowLength; j++){
+          randomParts.add(PolyPart.random(id: i*Puzzle.rowLength + j,degree: degree - j >= 0 ? degree - j : randomDegree(), canBeZero: j == 0 ? false : true),);
         }
       }
       return randomParts;
@@ -62,14 +62,14 @@ class PolynomialPuzzle extends Puzzle {
   }
 
   void _randomize(){
-    for(int i = 0; i < Puzzle.dimensions; i++){
+    for(int i = 0; i < Puzzle.coumnLength; i++){
       List<FunctionPart> shuffleList = List.empty(growable: true);
-      for(int j = 0; j < parts.length; j+=Puzzle.dimensions){
+      for(int j = 0; j < parts.length; j+=Puzzle.rowLength){
         shuffleList.add(parts[j + i]);
       }
       shuffleList.shuffle();
-      for(int j = 0; j < parts.length; j+=Puzzle.dimensions){
-        parts[j + i] = shuffleList[(j/Puzzle.dimensions).floor()];
+      for(int j = 0; j < parts.length; j+=Puzzle.rowLength){
+        parts[j + i] = shuffleList[(j/Puzzle.rowLength).floor()];
       }
     }
   }

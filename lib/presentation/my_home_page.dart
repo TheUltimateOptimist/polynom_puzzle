@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
+import 'package:polynom_puzzle/logic/models/puzzle.dart';
 import 'package:polynom_puzzle/presentation/Widgets/black_text.dart';
 import 'package:polynom_puzzle/presentation/Widgets/coordinate_system/coordinate_system.dart';
 import 'package:polynom_puzzle/presentation/Widgets/degree_select_button.dart';
@@ -35,16 +36,18 @@ class MyHomePage extends StatelessWidget {
             systemHeight = 400;
           }
           else{
-            Sizes.onMobile = true;
-            puzzleHeight = 250;
+            onMobile = true;
+            puzzleHeight = 180;
             systemHeight = 250;
             onMobile = true;
           }
-          Sizes.onMobile = onMobile;
           double aroundMargin = (constraints.maxWidth - puzzleHeight - systemHeight - 10)/2;
           aroundMargin-=aroundMargin/6;
           if(onMobile){
             aroundMargin = 5;
+          }
+          if(Sizes.setOnMobile(onMobile)){
+            context.read<PuzzleCubit>().shuffle();
           }
 
           return SafeArea(
@@ -54,7 +57,7 @@ class MyHomePage extends StatelessWidget {
                 margin: EdgeInsets.only(
                   left: aroundMargin,
                   top: 15,
-                  bottom: 30,
+                  bottom: onMobile ? 10 : 30,
                   right: aroundMargin,
                 ),
                 child: Column(
@@ -93,7 +96,7 @@ class MyHomePage extends StatelessWidget {
                       ],
                     ),
                      BlackText(
-                        title: "Change two tiles by selecting them",
+                        title: "Match the red onto the black function!",
                         fontSize: Sizes.explanationTextSize(),
                         fontFamily: "Noteworthy-Light"),
                         !onMobile ?

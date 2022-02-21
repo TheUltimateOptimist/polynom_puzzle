@@ -40,11 +40,13 @@ class SlideTile extends StatelessWidget {
                 ),
               ),
             ),
-            child: Math.tex(
-               ((part as PolyPart).scalar < 0 ? "-" : "+") + part.toString(),
-              textStyle:  TextStyle(
-                color: Colors.white,
-                fontSize: height / 4,
+            child: FittedBox(
+              child: Math.tex(
+                 ((part as PolyPart).scalar < 0 ? "-" : "+") + part.toString(),
+                textStyle:  TextStyle(
+                  color: Colors.white,
+                  fontSize: height / 4,
+                ),
               ),
             ),
             onPressed: (){final puzzleCubit = context.read<PuzzleCubit>();

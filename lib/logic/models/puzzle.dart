@@ -4,7 +4,8 @@ import 'package:polynom_puzzle/logic/models/puzzle_function.dart';
 abstract class Puzzle{
 
   List<FunctionPart> parts;
-  static const int dimensions = 4;
+  static const int rowLength = 4;
+  static  int coumnLength = 4;
   late final PuzzleFunction expectedFunction;
 
   Puzzle({required this.parts});
@@ -22,7 +23,7 @@ abstract class Puzzle{
 
   List<FunctionPart> getRow(int id){
     List<FunctionPart> partRow = List.empty(growable: true);
-    for(int i = id*dimensions; i < (id + 1)*dimensions; i++){
+    for(int i = id*rowLength; i < (id + 1)*rowLength; i++){
       partRow.add(parts[i]);
     }
     return partRow;
@@ -30,8 +31,8 @@ abstract class Puzzle{
 
   List<List<FunctionPart>> asTwoDimList(){
     List<List<FunctionPart>> result = List.empty(growable: true);
-    for(int i = 0; i < parts.length; i+=dimensions){
-      result.add(parts.sublist(i, i + dimensions));
+    for(int i = 0; i < parts.length; i+=rowLength){
+      result.add(parts.sublist(i, i + rowLength));
       // if(i + dimensions + 1 < parts.length){
       //   result.add(parts.sublist(i, i + dimensions + 1)); 
       // }
