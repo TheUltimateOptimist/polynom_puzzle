@@ -24,9 +24,11 @@ class DegreeSelectButton extends StatelessWidget {
                 degree,
               );
             },
-            child: WhiteText(
-              title: degree.toString(),
-              fontSize: Sizes.degreeTextSize(),
+            child: FittedBox(
+              child: WhiteText(
+                title: degree.toString(),
+                fontSize: Sizes.degreeTextSize(),
+              ),
             ),
             style: ElevatedButton.styleFrom(
               primary: (state.puzzle as PolynomialPuzzle).degree == degree
