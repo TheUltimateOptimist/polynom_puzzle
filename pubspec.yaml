@@ -41,6 +41,16 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons:
+  flutter_app_name: ^0.1.0
+
+flutter_app_name:
+  name: "Polynom Puzzle"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/launcher_icon.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
-import 'package:polynom_puzzle/logic/models/puzzle.dart';
 import 'package:polynom_puzzle/presentation/Widgets/black_text.dart';
 import 'package:polynom_puzzle/presentation/Widgets/coordinate_system/coordinate_system.dart';
 import 'package:polynom_puzzle/presentation/Widgets/degree_select_button.dart';
