@@ -4,7 +4,7 @@ import 'package:polynom_puzzle/logic/models/puzzle_function.dart';
 
 class FunctionPainter extends CustomPainter {
   double opacity = 0.2;
-  int numberOfLines = 10000;
+  int numberOfLines = 500;
   int maxX = 10;
 
   final PuzzleFunction expectedFunction;
