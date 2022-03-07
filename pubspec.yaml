@@ -37,6 +37,8 @@ dependencies:
   flutter_bloc: ^8.0.1
   responsive_framework: ^0.1.5
   flutter_math_fork: ^0.6.1
+  font_awesome_flutter: ^9.2.0
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +66,9 @@ flutter_icons:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/pictures/tafel.svg
+    - assets/pictures/poke.svg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

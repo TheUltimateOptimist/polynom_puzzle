@@ -5,47 +5,66 @@ import 'package:polynom_puzzle/logic/models/polynomial_function.dart';
 import 'package:polynom_puzzle/logic/models/poly_part.dart';
 import 'package:polynom_puzzle/logic/models/puzzle.dart';
 import 'package:polynom_puzzle/logic/models/puzzle_function.dart';
+import 'package:polynom_puzzle/presentation/Widgets/slide_puzzle.dart';
 
 class PolynomialPuzzle extends Puzzle {
-
   final int degree;
 
-  PolynomialPuzzle.random(
-      {required this.degree, 
-       }
-      ) : super(parts: []){
-        parts = _getRandomParts();
-        expectedFunction = getCurrentFunction();
-        do{_randomize();}while(isSolved());
-      }
+  PolynomialPuzzle.random({
+    required this.degree,
+  }) : super(parts: []) {
+    parts = _getRandomParts();
+    _initializePositions();
+    expectedFunction = getCurrentFunction();
+    do {
+      _randomize();
+    } while (isSolved());
+  }
 
-    List<FunctionPart> _getRandomParts(){
-      List<FunctionPart> randomParts = List.empty(growable: true);
-      for(int i = 0; i < Puzzle.coumnLength; i++){
-        for(int j = 0; j < Puzzle.rowLength; j++){
-          randomParts.add(PolyPart.random(id: i*Puzzle.rowLength + j,degree: degree - j >= 0 ? degree - j : randomDegree(), canBeZero: j == 0 ? false : true),);
-        }
+  List<FunctionPart> _getRandomParts() {
+    List<FunctionPart> randomParts = List.empty(growable: true);
+    for (int i = 0; i < Puzzle.coumnLength; i++) {
+      for (int j = 0; j < Puzzle.rowLength; j++) {
+        randomParts.add(
+          PolyPart.random(
+              id: i * Puzzle.rowLength + j,
+              degree: degree - j >= 0 ? degree - j : randomDegree(),
+              canBeZero: j == 0 ? false : true),
+        );
       }
-      return randomParts;
     }
+    return randomParts;
+  }
 
-    int randomDegree(){
-      Random rand = Random();
-      return rand.nextInt(degree + 1);
-    }
+  int randomDegree() {
+    Random rand = Random();
+    return rand.nextInt(degree + 1);
+  }
 
   @override
   PuzzleFunction getCurrentFunction() {
     List<PolyPart> functionParts = List.empty(growable: true);
-    for(int i = 0; i < degree + 1; i++){
-      functionParts.add(parts[i] as PolyPart);
+    for (int i = 0; i < parts.length; i++) {
+      if(isPartOfFunction(parts[i])){
+        functionParts.add(parts[i] as PolyPart);
+      }
     }
     return PolynomialFunction(polyParts: functionParts);
   }
 
+  // @override
+  // PuzzleFunction getExpectedFunction() {
+  //   List<PolyPart> functionParts = List.empty(growable: true);
+  //   for (int i = 0; i < degree + 1; i++) {
+  //       functionParts.add(parts[i] as PolyPart);
+    
+  //   }
+  //   return PolynomialFunction(polyParts: functionParts);
+  // }
+
   @override
   bool isSolved() {
-    if(getCurrentFunction().equals(expectedFunction)){
+    if (getCurrentFunction().equals(expectedFunction)) {
       return true;
     }
     return false;
@@ -53,24 +72,34 @@ class PolynomialPuzzle extends Puzzle {
 
   @override
   bool isPartOfFunction(FunctionPart part) {
-    for(int i = 0; i < degree + 1; i++){
-      if(parts[i].id == part.id){
-        return true;
-      }
+    if(part.topDistance == 0 && part.leftDistance <= degree*(SlidePuzzle.tileHeight + SlidePuzzle.tileMargin)){
+      return true;
     }
     return false;
   }
 
-  void _randomize(){
-    for(int i = 0; i < Puzzle.coumnLength; i++){
+  void _randomize() {
+    for (int i = 0; i < Puzzle.coumnLength; i++) {
       List<FunctionPart> shuffleList = List.empty(growable: true);
-      for(int j = 0; j < parts.length; j+=Puzzle.rowLength){
+      for (int j = 0; j < parts.length; j += Puzzle.rowLength) {
         shuffleList.add(parts[j + i]);
       }
       shuffleList.shuffle();
-      for(int j = 0; j < parts.length; j+=Puzzle.rowLength){
-        parts[j + i] = shuffleList[(j/Puzzle.rowLength).floor()];
+      for (int j = 0; j < parts.length; j += Puzzle.rowLength) {
+        parts[j + i] = shuffleList[(j / Puzzle.rowLength).floor()];
       }
+    }
+    _initializePositions();
+  }
+
+  void _initializePositions() {
+    for (int i = 0; i < parts.length; i++) {
+      int x = i % Puzzle.rowLength;
+      int y = (i / Puzzle.coumnLength).floor();
+      parts[i].leftDistance =
+          x * (SlidePuzzle.tileHeight + SlidePuzzle.tileMargin);
+      parts[i].topDistance =
+          y * (SlidePuzzle.tileHeight + SlidePuzzle.tileMargin);
     }
   }
 }

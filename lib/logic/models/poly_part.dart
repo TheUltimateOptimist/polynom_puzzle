@@ -41,4 +41,12 @@ class PolyPart extends FunctionPart{
     double result = scalar*pow(x, degree).toDouble();
     return result;
   }
+
+  @override
+  FunctionPart copyWith(double _leftDistance, double _topDistance) {
+    FunctionPart newPart = PolyPart(scalar: scalar, degree: degree, id: id);
+    newPart.leftDistance = _leftDistance;
+    newPart.topDistance = _topDistance;
+    return newPart;
+  }
 }

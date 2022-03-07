@@ -4,25 +4,33 @@ import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
 import 'package:polynom_puzzle/logic/models/function_part.dart';
+import 'package:polynom_puzzle/logic/models/poly_part.dart';
 import 'package:polynom_puzzle/logic/models/puzzle.dart';
 import 'package:polynom_puzzle/presentation/Widgets/action_button.dart';
 import 'package:polynom_puzzle/presentation/Widgets/dialog_text.dart';
 import 'package:polynom_puzzle/presentation/Widgets/shuffle_button.dart';
 import 'package:polynom_puzzle/presentation/Widgets/slide_tile.dart';
 
-import 'function_name.dart';
-
-class SlidePuzzle extends StatelessWidget {
+class SlidePuzzle extends StatefulWidget {
   final PuzzleCubit cubit;
-  final double height;
-  final double tileMargin;
-  const SlidePuzzle(
-      {required this.cubit,
-      Key? key,
-      required this.height,
-      required this.tileMargin})
-      : super(key: key);
+  const SlidePuzzle({
+    required this.cubit,
+    Key? key,
+  }) : super(key: key);
 
+  static double tileHeight = 80;
+  static double tileMargin = 10;
+  static double puzzleHeight =
+      Puzzle.coumnLength * tileHeight + (Puzzle.coumnLength - 1) * tileMargin;
+  static double puzzleWidth =
+      Puzzle.rowLength * tileHeight + (Puzzle.rowLength - 1) * tileMargin;
+      static const int animationDuration = 300;
+
+  @override
+  State<SlidePuzzle> createState() => _SlidePuzzleState();
+}
+
+class _SlidePuzzleState extends State<SlidePuzzle> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PuzzleCubit, PuzzleState>(
@@ -37,49 +45,56 @@ class SlidePuzzle extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: Sizes.onMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
-          children: [
-            Container(
-                margin: EdgeInsets.only(
-                  left: Sizes.onMobile ? 0 : 10,bottom: 4*tileMargin/3,
-               ),
-                child: FunctionName(
-                    color: FunctionColors.one,
-                    name: "f(x) = " +
-                        state.puzzle.getCurrentFunction().toString())),
-            SizedBox(
-              width: Sizes.onMobile ? height/3*4 : height,
-              height: height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  for (List<FunctionPart> partRow
-                      in state.puzzle.asTwoDimList())
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        for (FunctionPart part in partRow)
-                          SlideTile(
-                            part: part,
-                            height: height / Puzzle.coumnLength - tileMargin,
-                          ),
-                      ],
-                    ),
-                ],
-              ),
-            ),
-          ],
+        return Container(
+          height: SlidePuzzle.puzzleHeight,
+          width: SlidePuzzle.puzzleWidth,
+          child: Stack(
+            children: [
+              for (FunctionPart part in state.puzzle.parts)
+                AnimatedPositioned(
+                  left: part.leftDistance,
+                  top: part.topDistance,
+                  duration: Duration(
+                    milliseconds: SlidePuzzle.animationDuration,
+                  ),
+                  child: SlideTile(
+                    content: ((part as PolyPart).scalar < 0 ? "-" : "+") + part.toString(),
+                    color: calculateColor(part, state),
+                    onPressed: (){
+                      if(state.selectedPart != null){
+                        context.read<PuzzleCubit>().changeTiles(part);
+                      }
+                      else{
+                        context.read<PuzzleCubit>().selectFirst(part);
+                      }
+                    },
+                    height: SlidePuzzle.tileHeight,
+                  ),
+                ),
+            ],
+          ),
         );
       },
     );
   }
 
+  Color calculateColor(FunctionPart part, PuzzleState state){
+    if(state.selectedPart != null && state.selectedPart!.id == part.id){
+      return FunctionColors.two;
+    }
+    if(state.puzzle.isPartOfFunction(part)){
+      return FunctionColors.one;
+    }
+    return FunctionColors.three;
+  }
+
   solvedDialog(BuildContext context) {
     return Dialog(
       insetPadding: EdgeInsets.symmetric(
-        horizontal: Sizes.onMobile ? 40 : MediaQuery.of(context).size.width / 2 - 250,
-        vertical: Sizes.onMobile ? 240 : MediaQuery.of(context).size.height / 2 - 250,
+        horizontal:
+            Sizes.onMobile ? 40 : MediaQuery.of(context).size.width / 2 - 250,
+        vertical:
+            Sizes.onMobile ? 240 : MediaQuery.of(context).size.height / 2 - 250,
       ),
       alignment: Alignment.center,
       shape: RoundedRectangleBorder(
@@ -126,7 +141,7 @@ class SlidePuzzle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ActionButton(
-                  child:  Text(
+                  child: Text(
                     "Back",
                     style: TextStyle(
                         color: Colors.white,
@@ -142,7 +157,7 @@ class SlidePuzzle extends StatelessWidget {
                 ),
                 ShuffleButton(
                   onPressed: () {
-                    cubit.shuffle();
+                    widget.cubit.shuffle();
                     Navigator.pop(context);
                   },
                 ),

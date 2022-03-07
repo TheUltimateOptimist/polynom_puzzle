@@ -11,7 +11,7 @@ class WhiteText extends StatelessWidget {
     return Text(
       title,
       style: TextStyle(
-        fontFamily: "Noteworthy-Bold",
+        fontFamily: "Noteworthy-Light",
         color: Colors.white,
         fontSize: fontSize,
       ),

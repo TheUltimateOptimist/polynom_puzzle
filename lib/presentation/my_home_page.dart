@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
-import 'package:polynom_puzzle/presentation/Widgets/black_text.dart';
 import 'package:polynom_puzzle/presentation/Widgets/coordinate_system/coordinate_system.dart';
 import 'package:polynom_puzzle/presentation/Widgets/degree_select_button.dart';
 import 'package:polynom_puzzle/presentation/Widgets/moves.dart';
 import 'package:polynom_puzzle/presentation/Widgets/slide_puzzle.dart';
+import 'package:polynom_puzzle/presentation/textStyles/black_text.dart';
 
 import 'Widgets/shuffle_button.dart';
 
@@ -70,7 +70,7 @@ class MyHomePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children:  [
                             BlackText(
-                              title: "PolynomPuzzle",
+                              text: "PolynomPuzzle",
                               fontSize: Sizes.titleSize(),
                             ),
                             Moves(
@@ -78,6 +78,7 @@ class MyHomePage extends StatelessWidget {
                             ),
                           ],
                         ),
+                        
                   
                         Row(
                           children: const [
@@ -95,17 +96,15 @@ class MyHomePage extends StatelessWidget {
                       ],
                     ),
                      BlackText(
-                        title: "Match the red onto the black function!",
+                        text: "Match the red onto the black function!",
                         fontSize: Sizes.explanationTextSize(),
-                        fontFamily: "Noteworthy-Light"),
+                        ),
                         !onMobile ?
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SlidePuzzle(
                           cubit: context.read<PuzzleCubit>(),
-                          height: puzzleHeight,
-                          tileMargin: 10,
                         ),
                         Container(width: aroundMargin/3,),
                         CoordinateSystem(
@@ -114,8 +113,6 @@ class MyHomePage extends StatelessWidget {
                       ],
                     ) : SlidePuzzle(
                           cubit: context.read<PuzzleCubit>(),
-                          height: puzzleHeight,
-                          tileMargin: puzzleHeight / 50,
                         ),
                         onMobile? CoordinateSystem(
                           height: systemHeight,

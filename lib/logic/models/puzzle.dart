@@ -11,14 +11,13 @@ abstract class Puzzle{
   Puzzle({required this.parts});
 
   void changeParts(FunctionPart partOne, FunctionPart partTwo){
-    for(int i = 0; i < parts.length; i++){
-      if(parts[i].id == partOne.id){
-        parts[i] = partTwo;
-      }
-      else if(parts[i].id == partTwo.id){
-        parts[i] = partOne;
-      }
-    }
+    
+    final double oneLeftDistance = partOne.leftDistance;
+    final double oneTopDistance = partOne.topDistance;
+    partOne.leftDistance = partTwo.leftDistance;
+    partOne.topDistance = partTwo.topDistance;
+    partTwo.leftDistance = oneLeftDistance;
+    partTwo.topDistance = oneTopDistance;
   }
 
   List<FunctionPart> getRow(int id){
