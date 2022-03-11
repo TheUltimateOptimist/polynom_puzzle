@@ -4,6 +4,7 @@ import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
 import 'package:polynom_puzzle/logic/blocs/user_state.dart';
 import 'package:polynom_puzzle/logic/models/backEnd.dart';
+import 'package:polynom_puzzle/logic/models/stats.dart';
 import 'package:polynom_puzzle/presentation/colored_container.dart';
 import 'package:polynom_puzzle/presentation/pokes.dart';
 import 'package:polynom_puzzle/presentation/profile.dart';
@@ -65,7 +66,12 @@ class Ranking extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Profile(),
+                                  builder: (context) => Profile(
+                                    rank: map["rank"],name: map["name"],
+                                    stats: Stats.fromMap(
+                                      map["stats"],
+                                    ),
+                                  ),
                                 ),
                               );
                             },

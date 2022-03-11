@@ -12,6 +12,7 @@ import 'package:polynom_puzzle/presentation/top_row.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../function_colors.dart';
+import '../logic/models/stats.dart';
 import 'Widgets/white_text.dart';
 import 'colored_container.dart';
 
@@ -26,7 +27,10 @@ abstract class StatsTitles {
 }
 
 class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
+  final Stats? stats;
+  final int? rank;
+  final String? name;
+  const Profile({this.stats,this.rank,this.name,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,7 @@ class Profile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FutureBuilder(
-                        future: BackEnd().getRank(state.user.trophyCount),
+                        future: rank == null ? BackEnd().getRank(state.user.trophyCount) : Future.value(rank),
                         builder: ((context, snapshot) {
                           String text = "...";
                           if (snapshot.connectionState ==
@@ -62,8 +66,8 @@ class Profile extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (context) => Ranking()));
                             },
-                            title: state.user.name,
-                            first: "Logout",
+                            title: name ?? state.user.name,
+                            first: stats == null ? "Logout" : "",
                             second: "Rank" + text,
                           );
                         })),
@@ -71,17 +75,17 @@ class Profile extends StatelessWidget {
                       children: [
                         StatItem(
                           StatsTitles.overallGamesPlayed,
-                          state.user.stats.overallGamesPlayed,
+                          stats?.overallGamesPlayed ??  state.user.stats.overallGamesPlayed,
                           onContainer: false,
                         ),
                         StatItem(
                           StatsTitles.overallGamesWon,
-                          state.user.stats.cubicGamesWon,
+                          stats?.overallGamesWon ?? state.user.stats.overallGamesWon,
                           onContainer: false,
                         ),
                         StatItem(
                           StatsTitles.overallGameLost,
-                          state.user.stats.overallGamesLost,
+                          stats?.overallGamesLost ?? state.user.stats.overallGamesLost,
                           onContainer: false,
                         ),
                       ],
@@ -95,9 +99,9 @@ class Profile extends StatelessWidget {
                           child: ModeContent(
                             Difficultie.linear,
                             values: [
-                              state.user.stats.linearGamesPlayed,
-                              state.user.stats.linearGamesWon,
-                              state.user.stats.linearGamesLost,
+                              stats?.linearGamesPlayed ?? state.user.stats.linearGamesPlayed,
+                              stats?.linearGamesWon ?? state.user.stats.linearGamesWon,
+                              stats?.linearGamesLost ?? state.user.stats.linearGamesLost,
                             ],
                           ),
                           onPressed: () {},
@@ -108,9 +112,9 @@ class Profile extends StatelessWidget {
                           child: ModeContent(
                             Difficultie.quadratic,
                             values: [
-                              state.user.stats.quadraticGamesPlayed,
-                              state.user.stats.quadraticGamesWon,
-                              state.user.stats.quadraticGamesLost,
+                              stats?.quadraticGamesPlayed ?? state.user.stats.quadraticGamesPlayed,
+                              stats?.quadraticGamesWon ?? state.user.stats.quadraticGamesWon,
+                              stats?.quadraticGamesLost ?? state.user.stats.quadraticGamesLost,
                             ],
                           ),
                           onPressed: () {},
@@ -121,9 +125,9 @@ class Profile extends StatelessWidget {
                           child: ModeContent(
                             Difficultie.cubic,
                             values: [
-                              state.user.stats.cubicGamesPlayed,
-                              state.user.stats.cubicGamesWon,
-                              state.user.stats.cubicGamesLost,
+                              stats?.cubicGamesPlayed ?? state.user.stats.cubicGamesPlayed,
+                              stats?.cubicGamesWon ?? state.user.stats.cubicGamesWon,
+                              stats?.cubicGamesLost ?? state.user.stats.cubicGamesLost,
                             ],
                           ),
                           onPressed: () {},
