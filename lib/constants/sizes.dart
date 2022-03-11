@@ -1,4 +1,3 @@
-import 'package:polynom_puzzle/logic/models/puzzle.dart';
 
 class Sizes{
   static bool onMobile = false;
@@ -7,12 +6,10 @@ class Sizes{
  static bool setOnMobile(bool newValue){
     if(onMobile && !newValue){
       onMobile = newValue;
-      Puzzle.coumnLength = 4;
       return true;
     }
     else if(!onMobile && newValue){
       onMobile = newValue;
-      Puzzle.coumnLength = 3;
       return true;
     }
     return false;
@@ -23,7 +20,7 @@ class Sizes{
   }
 
   static double functionTextSize(){
-    return onMobile ? 20 : 30;
+    return onMobile ? 20 : 25;
   }
 
   static double movesTextSize(){

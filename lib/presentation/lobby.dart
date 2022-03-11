@@ -1,8 +1,15 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/function_colors.dart';
+import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
+import 'package:polynom_puzzle/logic/blocs/user_state.dart';
+import 'package:polynom_puzzle/logic/models/game.dart';
+import 'package:polynom_puzzle/logic/models/user.dart';
 import 'package:polynom_puzzle/presentation/colored_container.dart';
+import 'package:polynom_puzzle/presentation/playing.dart';
+import 'package:polynom_puzzle/presentation/profile.dart';
+import 'package:polynom_puzzle/presentation/ranking.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
 import 'package:polynom_puzzle/presentation/top_row.dart';
@@ -15,7 +22,7 @@ abstract class Modes {
   static const String withFriend = "Play with friend";
 }
 
-abstract class Difficulties {
+abstract class Difficultie {
   static const String linear = "linear";
   static const String quadratic = "quadratic";
   static const String cubic = "cubic";
@@ -43,8 +50,14 @@ class Lobby extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TopRow(
-                  firstPressed: () {},
-                  secondPressed: () {},
+                  firstPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Ranking()));
+                  },
+                  secondPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Profile()));
+                  },
                   title: "Polynom Puzzle",
                   first: "Rangliste",
                   second: "My Profile",
@@ -71,18 +84,46 @@ class Lobby extends StatelessWidget {
                       child: ModeContent(
                         Modes.singlePlayer,
                       ),
+                      onPressed: (){
+                        Game game = Game.singlePlayer(1);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Playing(game: game,),
+                          ),
+                        );
+                      },
                     ),
                     ColoredContainer(
                       FunctionColors.one,
                       child: ModeContent(
                         Modes.multiPlayer,
                       ),
+                      onPressed: () async{
+                        Game game = await Game.multiPlayer(1);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Playing(game: game),
+                          ),
+                        );
+                      },
                     ),
                     ColoredContainer(
                       FunctionColors.three,
                       child: ModeContent(
                         Modes.withFriend,
                       ),
+                      onPressed: () async{
+                        int gameId = Game.generateId();
+                        Game game = await Game.withFriend(1, gameId);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Playing(game: game),
+                          ),
+                        );
+                      },
                     ),
                   ],
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,13 +143,16 @@ class ModeContent extends ContainerContent {
           title,
           children: [
             SelectionRow(
-              title: Difficulties.linear,
+              mode: title,
+              title: Difficultie.linear,
             ),
             SelectionRow(
-              title: Difficulties.quadratic,
+              mode: title,
+              title: Difficultie.quadratic,
             ),
             SelectionRow(
-              title: Difficulties.cubic,
+              mode: title,
+              title: Difficultie.cubic,
             ),
           ],
         );
@@ -116,18 +160,14 @@ class ModeContent extends ContainerContent {
 
 class Selecter extends Stack {
   Selecter({
-    required final void Function() onPressed,
     final bool isSelected = false,
   }) : super(
           alignment: Alignment.center,
           children: [
-            IconButton(
-              icon: Icon(
-                Icons.circle,
-                size: Lobby.difficultyFontSize,
-                color: Colors.white,
-              ),
-              onPressed: onPressed,
+            Icon(
+              Icons.circle,
+              size: Lobby.difficultyFontSize,
+              color: Colors.white,
             ),
             if (isSelected)
               Transform.rotate(
@@ -144,47 +184,70 @@ class Selecter extends Stack {
 
 class SelectionRow extends StatelessWidget {
   final String title;
+  final String mode;
 
   SelectionRow({
+    required this.mode,
     this.title = "",
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        TextButton(
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(0, 0),
-            padding: EdgeInsets.symmetric(
-                horizontal: 0, vertical: Lobby.difficultyFontSize * 0.5),
-          ),
-          child: WhiteBoldText(
-            fontSize: Lobby.difficultyFontSize,
-            text: title,
-          ),
-          onPressed: onPressed,
-        ),
-        Selecter(
-          onPressed: onPressed,
-          isSelected: false,
-        )
-      ],
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<UserCubit, UserState>(
+      builder: (context, state) {
+        return Row(
+          children: [
+            TextButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(0, 0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: 0, vertical: Lobby.difficultyFontSize * 0.5),
+              ),
+              child: WhiteBoldText(
+                fontSize: Lobby.difficultyFontSize,
+                text: title,
+              ),
+              onPressed: () {
+                UserCubit cubit = context.read<UserCubit>();
+                switch (mode) {
+                  case Modes.singlePlayer:
+                    cubit.singlePlayerDifficultieSelected(title);
+                    break;
+                  case Modes.multiPlayer:
+                    cubit.multiPlayerDifficultieSelected(title);
+                    break;
+                  case Modes.withFriend:
+                    cubit.withFriendDifficultieSelected(title);
+                    break;
+                  default:
+                    throw new Exception(
+                        "ERROR: The mode could not be recognized correctly!");
+                }
+              },
+            ),
+            if (mode == Modes.singlePlayer &&
+                state.user.singlePlayerDifficulty == title)
+              Selecter(
+                isSelected: true,
+              )
+            else if (mode == Modes.multiPlayer &&
+                state.user.multiPlayerDifficulty == title)
+              Selecter(
+                isSelected: true,
+              )
+            else if (mode == Modes.withFriend &&
+                state.user.withFriendDifficulty == title)
+              Selecter(
+                isSelected: true,
+              )
+            else
+              Selecter(
+                isSelected: false,
+              ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        );
+      },
     );
-  }
-
-  void onPressed() {
-    switch (title) {
-      case Difficulties.linear: //do
-        break;
-      case Difficulties.quadratic: //do
-        break;
-      case Difficulties.cubic: //do
-        break;
-      default:
-        throw new Exception(
-            "ERROR: The mode could not be recognized correctly!");
-    }
   }
 }

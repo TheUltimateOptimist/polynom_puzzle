@@ -12,7 +12,7 @@ class ColoredContainer extends Container {
           color: Colors.transparent,
           child: IgnorePointer(ignoring: ignorePointer,
             child: ElevatedButton(
-              onPressed:(){},
+              onPressed:onPressed,
               child: child,
               style: ElevatedButton.styleFrom(
                 primary: color,

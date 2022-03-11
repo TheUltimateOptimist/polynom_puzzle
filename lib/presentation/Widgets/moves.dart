@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polynom_puzzle/logic/blocs/puzzle_cubit.dart';
+import 'package:polynom_puzzle/logic/blocs/game_cubit.dart';
 
 class Moves extends StatelessWidget {
   final double fontSize;
@@ -9,10 +9,10 @@ class Moves extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PuzzleCubit, PuzzleState>(
+    return BlocBuilder<GameCubit, GameState>(
       builder: (context, state) {
         return Text(
-          state.numberOfMoves.toString() + " Moves",
+          state.game.firstPlayerPuzzle.moves.toString() + " Moves",
           style: TextStyle(
             fontFamily: "Noteworthy-Bold",
             color: const Color(0xfff97068),

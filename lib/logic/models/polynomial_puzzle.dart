@@ -10,6 +10,17 @@ import 'package:polynom_puzzle/presentation/Widgets/slide_puzzle.dart';
 class PolynomialPuzzle extends Puzzle {
   final int degree;
 
+  PolynomialPuzzle({
+    required this.degree,
+    required final int columnLength,
+    required final int rowLength,
+    required List<FunctionPart> parts,
+    int moves = 0,
+  }) : super(
+          parts: parts,
+          moves: moves,
+        );
+
   PolynomialPuzzle.random({
     required this.degree,
   }) : super(parts: []) {
@@ -23,7 +34,7 @@ class PolynomialPuzzle extends Puzzle {
 
   List<FunctionPart> _getRandomParts() {
     List<FunctionPart> randomParts = List.empty(growable: true);
-    for (int i = 0; i < Puzzle.coumnLength; i++) {
+    for (int i = 0; i < Puzzle.columnLength; i++) {
       for (int j = 0; j < Puzzle.rowLength; j++) {
         randomParts.add(
           PolyPart.random(
@@ -45,7 +56,7 @@ class PolynomialPuzzle extends Puzzle {
   PuzzleFunction getCurrentFunction() {
     List<PolyPart> functionParts = List.empty(growable: true);
     for (int i = 0; i < parts.length; i++) {
-      if(isPartOfFunction(parts[i])){
+      if (isPartOfFunction(parts[i])) {
         functionParts.add(parts[i] as PolyPart);
       }
     }
@@ -57,7 +68,7 @@ class PolynomialPuzzle extends Puzzle {
   //   List<PolyPart> functionParts = List.empty(growable: true);
   //   for (int i = 0; i < degree + 1; i++) {
   //       functionParts.add(parts[i] as PolyPart);
-    
+
   //   }
   //   return PolynomialFunction(polyParts: functionParts);
   // }
@@ -72,14 +83,16 @@ class PolynomialPuzzle extends Puzzle {
 
   @override
   bool isPartOfFunction(FunctionPart part) {
-    if(part.topDistance == 0 && part.leftDistance <= degree*(SlidePuzzle.tileHeight + SlidePuzzle.tileMargin)){
+    if (part.topDistance == 0 &&
+        part.leftDistance <=
+            degree * (SlidePuzzle.tileHeight + SlidePuzzle.tileMargin)) {
       return true;
     }
     return false;
   }
 
   void _randomize() {
-    for (int i = 0; i < Puzzle.coumnLength; i++) {
+    for (int i = 0; i < Puzzle.columnLength; i++) {
       List<FunctionPart> shuffleList = List.empty(growable: true);
       for (int j = 0; j < parts.length; j += Puzzle.rowLength) {
         shuffleList.add(parts[j + i]);
@@ -95,11 +108,42 @@ class PolynomialPuzzle extends Puzzle {
   void _initializePositions() {
     for (int i = 0; i < parts.length; i++) {
       int x = i % Puzzle.rowLength;
-      int y = (i / Puzzle.coumnLength).floor();
+      int y = (i / Puzzle.columnLength).floor();
       parts[i].leftDistance =
           x * (SlidePuzzle.tileHeight + SlidePuzzle.tileMargin);
       parts[i].topDistance =
           y * (SlidePuzzle.tileHeight + SlidePuzzle.tileMargin);
     }
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    List<String> newParts = List.empty(growable: true);
+    for (FunctionPart part in parts) {
+      newParts.add(part.toString());
+    }
+    return {
+      "expectedFunction": expectedFunction.toString(),
+      "degree": degree,
+      "parts": newParts,
+      "moves": moves,
+    };
+  }
+
+  static PolynomialPuzzle fromMap(Map<String, dynamic> map) {
+    List<dynamic> mapParts = map["parts"];
+    for (int i = 0; i < mapParts.length; i++) {
+      mapParts[i] = PolyPart.fromMap(mapParts[i]);
+    }
+    PolynomialPuzzle result = PolynomialPuzzle(
+      degree: map["degree"],
+      columnLength: map["columnLength"],
+      rowLength: map["rowLength"],
+      parts: mapParts as List<FunctionPart>,
+      moves: map["moves"],
+    );
+    result.expectedFunction =
+        PolynomialFunction.fromMap(map["expectedFunction"]);
+    return result;
   }
 }

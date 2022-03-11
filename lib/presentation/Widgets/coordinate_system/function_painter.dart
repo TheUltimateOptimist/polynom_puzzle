@@ -1,35 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/models/puzzle_function.dart';
+import 'package:polynom_puzzle/presentation/Widgets/visualization.dart';
 
 class FunctionPainter extends CustomPainter {
   double opacity = 0.2;
   int numberOfLines = 500;
-  int maxX = 10;
+  late double maxX;
+  late double maxY;
 
   final PuzzleFunction expectedFunction;
   final PuzzleFunction currentFunction;
+  final PuzzleFunction? opponentFunction;
   
   Paint functionPaint = Paint()
     ..strokeWidth = 3
     ..strokeCap = StrokeCap.round;
   FunctionPainter(
-      {required this.expectedFunction, required this.currentFunction});
+      {required this.expectedFunction, required this.currentFunction, this.opponentFunction});
 
   @override
   void paint(Canvas canvas, Size size) {
-    paintFunction(canvas, size, expectedFunction, true);
-    paintFunction(canvas, size, currentFunction, false);
+    maxX = size.width/Visualization.pixelPerUnit/2;
+    maxY = size.height/Visualization.pixelPerUnit/2;
+    if(opponentFunction != null){
+      paintFunction(canvas, size, opponentFunction!, Colors.blue);
+    }
+    paintFunction(canvas, size, expectedFunction, Colors.black);
+    paintFunction(canvas, size, currentFunction, FunctionColors.one);
   }
 
   void paintFunction(Canvas canvas, Size size,
-      PuzzleFunction function, bool isExpected) {
+      PuzzleFunction function, Color color) {
+        functionPaint.color = color;
     double distance = size.width / numberOfLines;
-    if (isExpected) {
-      functionPaint.color = Colors.black;
-    } else {
-      functionPaint.color = FunctionColors.one;
-    }
     for (int i = 0; i < numberOfLines; i++) {
       double startX = i * distance;
       double startY = toUIY(
@@ -51,7 +55,7 @@ class FunctionPainter extends CustomPainter {
             ),
             size,
           );
-      if(endY <= size.height && startY <= size.height && endY >= 0 && startY >= 0){
+      if(endY <= (size.height - Visualization.systemMargin) && startY <= (size.height - Visualization.systemMargin) && endY >= Visualization.systemMargin && startY >= Visualization.systemMargin){
       canvas.drawLine(
         Offset(
           startX,
@@ -62,8 +66,11 @@ class FunctionPainter extends CustomPainter {
           endY,
         ),
         functionPaint,
-      );}
+      );
+      
+      }
     }
+    print("Hallo");
   }
 
   double toFuncX(double x, Size size) {
@@ -73,13 +80,13 @@ class FunctionPainter extends CustomPainter {
   }
 
   double toUIY(double c, Size size) {
-    c = c*(-1)*(size.width / (maxX * 2));
-    c = c + size.width / 2;
+    c = c*(-1)*(size.height / (maxY * 2));
+    c = c + size.height / 2;
     return c;
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+    return false;
   }
 }

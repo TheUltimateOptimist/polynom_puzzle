@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
+import 'package:polynom_puzzle/presentation/lobby.dart';
 import 'package:polynom_puzzle/presentation/registerLoginWidgets/big_black_button.dart';
 import 'package:polynom_puzzle/presentation/registerLoginWidgets/google_button.dart';
 import 'package:polynom_puzzle/presentation/registerLoginWidgets/input_field.dart';
 import 'package:polynom_puzzle/presentation/registerLoginWidgets/small_black_button.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_bold_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_text.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
 class RegisterLoginLayout extends StatefulWidget {
@@ -40,16 +43,19 @@ class _RegisterLoginLayoutState extends State<RegisterLoginLayout> {
               text: widget.isRegister ? "Register" : "Login",
             ),
             SmallBlackButton(
-              onPressed: () {},
+              onPressed: () async{
+                await context.read<UserCubit>().loginAsGuest();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Lobby()));
+              },
               title: "Play as guest",
             ),
           ],
         ),
-        if (widget.isRegister)
           InputField(
             hintText: "E-Mail",
             textEditingController: emailEditingController,
           ),
+          if (widget.isRegister)
         InputField(
           hintText: "Username",
           textEditingController: nameEditingController,
@@ -62,7 +68,16 @@ class _RegisterLoginLayoutState extends State<RegisterLoginLayout> {
           mainAxisSize: MainAxisSize.min,
           children: [
             BigBlackButton(
-              onPressed: () {},
+              onPressed: () async{
+                UserCubit userCubit = context.read<UserCubit>();
+                if(widget.isRegister){
+                await userCubit.register(emailEditingController.text, nameEditingController.text, passwordEditingController.text,);
+              }
+              else{
+                await userCubit.login(emailEditingController.text, passwordEditingController.text);
+              }
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Lobby()));
+              },
               title: widget.isRegister ? "Register now" : "Login",
             ),
             Row(
@@ -93,7 +108,7 @@ class _RegisterLoginLayoutState extends State<RegisterLoginLayout> {
           text: "or",
           fontSize: RegisterLoginLayout.secondTextSize,
         ),
-        GoogleButton(() {})
+        GoogleButton(() {Navigator.push(context, MaterialPageRoute(builder: (context) => Lobby()));})
       ],
     );
   }

@@ -55,7 +55,6 @@ class TopRow extends StatelessWidget {
               width: navigationMargin,
             ),
             Pokes(
-              1000,
             ),
           ],
         )

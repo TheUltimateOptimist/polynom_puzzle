@@ -8,4 +8,6 @@ abstract class FunctionPart{
   double getY(double x);
 
   FunctionPart copyWith(double leftDistance, double topDistance);
+
+  Map<String, dynamic> toMap();
 }

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/function_colors.dart';
+import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
+import 'package:polynom_puzzle/logic/blocs/user_state.dart';
+import 'package:polynom_puzzle/logic/models/backEnd.dart';
 import 'package:polynom_puzzle/presentation/colored_container.dart';
 import 'package:polynom_puzzle/presentation/pokes.dart';
+import 'package:polynom_puzzle/presentation/profile.dart';
+import 'package:polynom_puzzle/presentation/textStyles/black_bold_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/wihte_text.dart';
 
@@ -22,39 +28,54 @@ class Ranking extends StatelessWidget {
             0,
             0.95,
           ),
-          child: ListView.builder(
-              itemCount: 25,
-              itemBuilder: (context, index) {
-                int rank = index;
-                if (rank == 0) return Container();
-                late Color color;
-                switch (rank) {
-                  case 1:
-                    color = FunctionColors.one;
-                    break;
-                  case 2:
-                    color = FunctionColors.two;
-                    break;
-                  case 3:
-                    color = FunctionColors.three;
-                    break;
-                  default:
-                    color = Colors.black;
-                }
-                return Container(
-                  margin: EdgeInsets.symmetric(
-                    vertical: aroundMargin,
-                  ),
-                  height: entryHeight,
-                  width: MediaQuery.of(context).size.width,
-                  child: PlayerEntry(
-                    onPressed: () {},
-                    color: color,
-                    ranking: rank,
-                    playerName: "Test Person",
-                  ),
-                );
-              }),
+          child: BlocBuilder<UserCubit, UserState>(
+            builder: (context, state) {
+              return FutureBuilder(future: BackEnd().getRankList(),builder: ((context, snapshot) {
+                if(snapshot.connectionState == ConnectionState.done){
+                return ListView.builder(
+                    itemCount: (snapshot.data as List<Map<String, dynamic>>).length,
+                    itemBuilder: (context, index) {
+                      final Map<String, dynamic> map = (snapshot.data as List<Map<String, dynamic>>)[index];
+                      int rank = index + 1;
+                      late Color color;
+                      switch (rank) {
+                        case 1:
+                          color = FunctionColors.one;
+                          break;
+                        case 2:
+                          color = FunctionColors.two;
+                          break;
+                        case 3:
+                          color = FunctionColors.three;
+                          break;
+                        default:
+                          color = Colors.black;
+                      }
+                      return Container(
+                        margin: EdgeInsets.symmetric(
+                          vertical: aroundMargin,
+                        ),
+                        height: entryHeight,
+                        width: MediaQuery.of(context).size.width,
+                        child: PlayerEntry(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Profile(),),);
+                          },
+                          color: color,
+                          ranking: rank,
+                          playerName: map["name"],trophyCount: map["trophyCount"],
+                        ),
+                      );
+                    },);}
+                    else{
+                      return Center(child: BlackBoldText(fontSize: 25, text: "Loading...",),);
+                    }}),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -104,7 +125,6 @@ class PlayerEntry extends ElevatedButton {
                 ],
               ),
               Pokes(
-                trophyCount,
                 isWhite: true,
               ),
             ],

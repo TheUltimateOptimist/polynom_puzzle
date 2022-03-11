@@ -39,6 +39,13 @@ dependencies:
   flutter_math_fork: ^0.6.1
   font_awesome_flutter: ^9.2.0
   flutter_svg: ^1.0.3
+  syncfusion_flutter_charts: ^19.4.54
+  hive: ^2.0.6
+  hive_flutter: ^1.1.0
+  connectivity_plus: ^2.2.1
+  firebase_core: ^1.13.0
+  cloud_firestore: ^3.1.9
+  firebase_auth: ^3.3.8
 
 dev_dependencies:
   flutter_test:
