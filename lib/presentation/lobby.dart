@@ -5,7 +5,6 @@ import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
 import 'package:polynom_puzzle/logic/blocs/user_state.dart';
 import 'package:polynom_puzzle/logic/models/game.dart';
-import 'package:polynom_puzzle/logic/models/user.dart';
 import 'package:polynom_puzzle/presentation/colored_container.dart';
 import 'package:polynom_puzzle/presentation/playing.dart';
 import 'package:polynom_puzzle/presentation/profile.dart';
