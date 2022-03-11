@@ -42,15 +42,29 @@ Future<List<Map<String, dynamic>>> getRankList() async{
    for(var doc in rankList.docs){
      Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
      if(map["email"] != PuzzleUser().user!.email) {
+       map["isCurrentUser"] = false;
      result.add(map);}
    }
    int index = result.indexWhere((element) => element["trophyCount"] <= PuzzleUser().trophyCount);
+    Map<String, dynamic> userMap = PuzzleUser().toMap();
+    userMap["isCurrentUser"] = true;
    if(index >=0){
-   result.insert(index, PuzzleUser().toMap());}
+   result.insert(index, userMap);
+   result = _withRanks(result);
+   }
    else{
-     result.add(PuzzleUser().toMap());
+     result = _withRanks(result);
+     userMap["rank"] = await getRank(userMap["trophyCount"]);
+     result.add(userMap);
    }
    return result;
+}
+
+List<Map<String, dynamic>> _withRanks(List<Map<String, dynamic>> list){
+  for(int i = 0; i < list.length; i++){
+    list[i]["rank"] = i + 1;
+  }
+  return list;
 }
 
 Future<Game> getMultiPlayerGame(Game game) async{
