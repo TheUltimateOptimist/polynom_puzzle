@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
-import 'package:polynom_puzzle/presentation/lobby.dart';
 import 'package:polynom_puzzle/presentation/registerLoginWidgets/big_black_button.dart';
 import 'package:polynom_puzzle/presentation/registerLoginWidgets/google_button.dart';
 import 'package:polynom_puzzle/presentation/registerLoginWidgets/input_field.dart';
@@ -45,7 +44,6 @@ class _RegisterLoginLayoutState extends State<RegisterLoginLayout> {
             SmallBlackButton(
               onPressed: () async{
                 await context.read<UserCubit>().loginAsGuest();
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Lobby()));
               },
               title: "Play as guest",
             ),
@@ -71,12 +69,11 @@ class _RegisterLoginLayoutState extends State<RegisterLoginLayout> {
               onPressed: () async{
                 UserCubit userCubit = context.read<UserCubit>();
                 if(widget.isRegister){
-                await userCubit.register(emailEditingController.text, nameEditingController.text, passwordEditingController.text,);
+                await userCubit.register(emailEditingController, nameEditingController, passwordEditingController,);
               }
               else{
-                await userCubit.login(emailEditingController.text, passwordEditingController.text);
+                await userCubit.login(emailEditingController, passwordEditingController);
               }
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Lobby()));
               },
               title: widget.isRegister ? "Register now" : "Login",
             ),
@@ -108,7 +105,9 @@ class _RegisterLoginLayoutState extends State<RegisterLoginLayout> {
           text: "or",
           fontSize: RegisterLoginLayout.secondTextSize,
         ),
-        GoogleButton(() {Navigator.push(context, MaterialPageRoute(builder: (context) => Lobby()));})
+        GoogleButton(() async{
+          await context.read<UserCubit>().loginWithGoogle();
+          })
       ],
     );
   }

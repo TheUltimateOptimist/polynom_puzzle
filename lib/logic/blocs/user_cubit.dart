@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/logic/blocs/user_state.dart';
 import 'package:polynom_puzzle/logic/models/backEnd.dart';
@@ -40,46 +42,47 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> loginWithGoogle() async {
-    await state.user.loginWithGoogle();
+    String? errorMessage = await state.user.loginWithGoogle();
     emit(
       UserState(
         state.user,
+        errorMessage: errorMessage
       ),
     );
   }
 
-  Future<void> login(String email, String password) async {
-    await state.user.login(email, password);
+  Future<void> login(TextEditingController emailController, TextEditingController passwordController) async {
+    String? errorMessage = await state.user.login(emailController, passwordController);
     emit(
       UserState(
-        state.user,
+        state.user,errorMessage: errorMessage
       ),
     );
   }
 
-  Future<void> register(String email, String userName, String password) async {
-    await state.user.register(email, userName, password);
+  Future<void> register(TextEditingController emailController, TextEditingController userNameController, TextEditingController passwordController) async {
+    String? errorMessage = await state.user.register(emailController, userNameController, passwordController);
     emit(
       UserState(
-        state.user,
+        state.user,errorMessage:errorMessage
       ),
     );
   }
 
   Future<void> logout() async {
-    await state.user.logout();
+    String? errorMessage = await state.user.logout();
     emit(
       UserState(
-        state.user,
+        state.user,errorMessage: errorMessage
       ),
     );
   }
 
   Future<void> loginAsGuest() async {
-    await state.user.loginAsGuest();
+    String? errorMessage = await state.user.loginAsGuest();
     emit(
       UserState(
-        state.user,
+        state.user,errorMessage: errorMessage
       ),
     );
   }

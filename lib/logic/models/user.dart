@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:polynom_puzzle/logic/models/backEnd.dart';
 import 'package:polynom_puzzle/logic/models/stats.dart';
 import 'package:polynom_puzzle/presentation/lobby.dart';
@@ -69,50 +70,62 @@ class PuzzleUser {
     };
   }
 
-  Future<void> login(String email, String password)async{
+  Future<String?> login(TextEditingController emailController, TextEditingController passwordController)async{
     try{
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await _auth.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
       user = _auth.currentUser;
       await initializeUserData();
+      return null;
     }
     on FirebaseAuthException catch(e){
-      print(e.message);
+      print(e.code);
+      if(e.code == "wrong-password"){
+        passwordController.clear();
+        return "Wrong password";
+      }
+      return e.message ?? "An error occurred";
     }
   }
 
-  Future<void> loginWithGoogle()async{
-    
+  Future<String?> loginWithGoogle()async{
+    return "";
   }
 
-  Future<void> logout()async{
+  Future<String?> logout()async{
     try{
       await _auth.signOut();
       user = _auth.currentUser;
+      return null;
     }
     on FirebaseAuthException catch(e){
-      print(e.message);
+      return e.message ?? "An error occurred";
     }
   }
 
-  Future<void> register(String email, String userName, String password)async{
+  Future<String?> register(TextEditingController emailController, TextEditingController userNameController, TextEditingController passwordController)async{
     try{
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      name = userName;
+      await _auth.createUserWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+      name = userNameController.text;
       user = _auth.currentUser;
       await BackEnd().addUser(this.toMap());
+      return null;
     }
     on FirebaseAuthException catch(e){
-      print(e.message);
+      if(e.code == "email-already-in-use"){
+        emailController.clear();
+      }
+      return e.message ?? "An error occurred";
     }
   }
 
-  Future<void> loginAsGuest() async{
+  Future<String?> loginAsGuest() async{
     try{
       await _auth.signInAnonymously();
       user = _auth.currentUser;
+      return null;
     }
     on FirebaseAuthException catch(e){
-      print(e.message);
+      return e.message ?? "An error occurred";
     }
   }
 }

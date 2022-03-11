@@ -6,17 +6,27 @@ import 'package:polynom_puzzle/presentation/lobby.dart';
 import 'package:polynom_puzzle/presentation/starting_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({ Key? key }) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserCubit, UserState>(
+    return BlocConsumer<UserCubit, UserState>(
+      listener: (context, state) {
+        if (state.errorMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.errorMessage!,
+              ),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         print(state.user.user);
-        if(state.user.user != null){
+        if (state.user.user != null) {
           return const Lobby();
-        }
-        else{
+        } else {
           return const StartingPage();
         }
       },
