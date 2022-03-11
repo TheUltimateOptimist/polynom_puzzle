@@ -173,7 +173,7 @@ class Selecter extends Stack {
                 angle: pi / 4,
                 child: Icon(
                   Icons.add,
-                  size: Lobby.difficultyFontSize * 2,
+                  size: Lobby.difficultyFontSize * 1,
                   color: Colors.black,
                 ),
               ),
