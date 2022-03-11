@@ -9,9 +9,10 @@ import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
 class Pokes extends BlocBuilder<UserCubit, UserState> {
   static const double textSize = 20;
   static const double spaceBetween = 5;
+
   Pokes(
     {
-    final bool isWhite = false,
+    final bool isWhite = false,final int? trophyCount,
   }) : super(
           builder: (context, state) {
             return Row(
@@ -23,7 +24,7 @@ class Pokes extends BlocBuilder<UserCubit, UserState> {
                   child: isWhite
                       ? WhiteBoldText(
                           fontSize: textSize,
-                          text: state.user.trophyCount.toString(),
+                          text: trophyCount == null ? state.user.trophyCount.toString() : trophyCount.toString(),
                         )
                       : BlackBoldText(
                           fontSize: textSize,

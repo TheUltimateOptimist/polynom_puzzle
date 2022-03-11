@@ -40,7 +40,15 @@ Future<List<Map<String, dynamic>>> getRankList() async{
    var rankList =  await users.orderBy("trophyCount", descending: true).limit(100).get();
    List<Map<String, dynamic>> result = List.empty(growable: true);
    for(var doc in rankList.docs){
-     result.add(doc.data() as Map<String, dynamic>);
+     Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+     if(map["email"] != PuzzleUser().user!.email) {
+     result.add(map);}
+   }
+   int index = result.indexWhere((element) => element["trophyCount"] <= PuzzleUser().trophyCount);
+   if(index >=0){
+   result.insert(index, PuzzleUser().toMap());}
+   else{
+     result.add(PuzzleUser().toMap());
    }
    return result;
 }

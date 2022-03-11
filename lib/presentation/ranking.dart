@@ -71,7 +71,7 @@ class Ranking extends StatelessWidget {
                       );
                     },);}
                     else{
-                      return Center(child: BlackBoldText(fontSize: 25, text: "Loading...",),);
+                      return Center(child: WhiteBoldText(fontSize: 25, text: "Loading...",),);
                     }}),
               );
             },
@@ -124,7 +124,7 @@ class PlayerEntry extends ElevatedButton {
                   ),
                 ],
               ),
-              Pokes(
+              Pokes(trophyCount: trophyCount,
                 isWhite: true,
               ),
             ],
