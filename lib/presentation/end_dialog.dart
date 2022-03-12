@@ -79,7 +79,7 @@ class EndDialog extends StatelessWidget {
               ],
             ),
             if (pokesCount != null)
-              Pokes()
+              Pokes(trophyCount: pokesCount! < 0 ? "- " + pokesCount!.abs().toString() : "+ " + pokesCount.toString(),)
             else
               Container(
                 height: Sizes.onMobile ? 30 : 40,

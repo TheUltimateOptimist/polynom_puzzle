@@ -27,7 +27,7 @@ class GameCubit extends Cubit<GameState> {
       if (state.game.firstPlayerPuzzle.isSolved()) {
         state.game.status = 3;
         BackEnd().updateGameField(
-            {"status": 3, "firstPlayerPuzzle": state.game.firstPlayerPuzzle},
+            {"status": 3, "firstPlayerPuzzle": state.game.firstPlayerPuzzle.toMap()},
             state.game.docId!);
         emit(
           GameState(

@@ -12,7 +12,7 @@ class Pokes extends BlocBuilder<UserCubit, UserState> {
 
   Pokes(
     {
-    final bool isWhite = false,final int? trophyCount,
+    final bool isWhite = false,final String? trophyCount,
   }) : super(
           builder: (context, state) {
             return Row(
@@ -24,11 +24,11 @@ class Pokes extends BlocBuilder<UserCubit, UserState> {
                   child: isWhite
                       ? WhiteBoldText(
                           fontSize: textSize,
-                          text: trophyCount == null ? state.user.trophyCount.toString() : trophyCount.toString(),
+                          text: trophyCount == null ? state.user.trophyCount.toString() : trophyCount,
                         )
                       : BlackBoldText(
                           fontSize: textSize,
-                          text: state.user.trophyCount.toString(),
+                          text: trophyCount == null ? state.user.trophyCount.toString() : trophyCount,
                         ),
                 ),
                 Container(

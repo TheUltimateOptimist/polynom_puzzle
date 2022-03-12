@@ -12,8 +12,6 @@ class PolynomialPuzzle extends Puzzle {
 
   PolynomialPuzzle({
     required this.degree,
-    required final int columnLength,
-    required final int rowLength,
     required List<FunctionPart> parts,
     int moves = 0,
   }) : super(
@@ -118,12 +116,12 @@ class PolynomialPuzzle extends Puzzle {
 
   @override
   Map<String, dynamic> toMap() {
-    List<String> newParts = List.empty(growable: true);
+    List<Map<String, dynamic>> newParts = List.empty(growable: true);
     for (FunctionPart part in parts) {
-      newParts.add(part.toString());
+      newParts.add(part.toMap());
     }
     return {
-      "expectedFunction": expectedFunction.toString(),
+      "expectedFunction": expectedFunction.toMap(),
       "degree": degree,
       "parts": newParts,
       "moves": moves,
@@ -132,14 +130,13 @@ class PolynomialPuzzle extends Puzzle {
 
   static PolynomialPuzzle fromMap(Map<String, dynamic> map) {
     List<dynamic> mapParts = map["parts"];
+    List<FunctionPart> parts = List.empty(growable: true);
     for (int i = 0; i < mapParts.length; i++) {
-      mapParts[i] = PolyPart.fromMap(mapParts[i]);
+      parts.add(PolyPart.fromMap(mapParts[i]));
     }
     PolynomialPuzzle result = PolynomialPuzzle(
       degree: map["degree"],
-      columnLength: map["columnLength"],
-      rowLength: map["rowLength"],
-      parts: mapParts as List<FunctionPart>,
+      parts: parts,
       moves: map["moves"],
     );
     result.expectedFunction =

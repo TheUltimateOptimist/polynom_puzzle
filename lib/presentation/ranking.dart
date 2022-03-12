@@ -151,7 +151,7 @@ class PlayerEntry extends ElevatedButton {
                 ],
               ),
               Pokes(
-                trophyCount: trophyCount,
+                trophyCount: trophyCount.toString(),
                 isWhite: true,
               ),
             ],

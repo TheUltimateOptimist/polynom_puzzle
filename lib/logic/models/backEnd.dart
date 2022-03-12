@@ -91,7 +91,8 @@ Future<Game> getWithFriendGame(Game? game) async{
 }
 
 Future<Game> getGameById(String gameId) async{
-  return Game.fromMap((await games.doc(gameId).get()).data() as Map<String, dynamic>);
+  var result = (await games.doc(gameId).get()).data();
+  return Game.fromMap(result as Map<String, dynamic>);
 }
 
 Future<String> postGame(Game game) async{

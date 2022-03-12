@@ -75,7 +75,7 @@ class PolynomialFunction extends PuzzleFunction {
 
   static PolynomialFunction fromMap(Map<String, dynamic> map) {
     List<PolyPart> parts = List.empty(growable: true);
-    List<Map<String, dynamic>> mapList = map["parts"];
+    List<dynamic> mapList = map["parts"];
     for (int i = 0; i < mapList.length; i++) {
       parts.add(PolyPart.fromMap(mapList[i]));
     }

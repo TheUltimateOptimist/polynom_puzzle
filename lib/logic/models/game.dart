@@ -117,7 +117,7 @@ class Game {
   }
 
   Future<void> syncOwnPuzzle() async{
-    await BackEnd().updateGameField({"firstPlayerPuzzle": firstPlayerPuzzle}, docId!);
+    await BackEnd().updateGameField({"firstPlayerPuzzle": firstPlayerPuzzle.toMap()}, docId!);
   }
 
   int trophyChange(bool hasWon){
