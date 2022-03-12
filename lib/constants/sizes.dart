@@ -2,6 +2,9 @@
 class Sizes{
   static bool onMobile = false;
 
+  static double totalWidth = 1000;
+  static double totalHeight = 1000;
+
   //returns true if the newValue is not equal to the old value
  static bool setOnMobile(bool newValue){
     if(onMobile && !newValue){

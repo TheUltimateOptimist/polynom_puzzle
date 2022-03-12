@@ -8,12 +8,12 @@ import 'package:polynom_puzzle/presentation/ranking.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_bold_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
+import 'package:polynom_puzzle/presentation/textStyles/wihte_text.dart';
 import 'package:polynom_puzzle/presentation/top_row.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../function_colors.dart';
 import '../logic/models/stats.dart';
-import 'Widgets/white_text.dart';
 import 'colored_container.dart';
 
 abstract class StatsTitles {
@@ -97,7 +97,7 @@ class Profile extends StatelessWidget {
                           FunctionColors.two,
                           ignorePointer: true,
                           child: ModeContent(
-                            Difficultie.linear,
+                            Difficulty.linear,
                             values: [
                               stats?.linearGamesPlayed ?? state.user.stats.linearGamesPlayed,
                               stats?.linearGamesWon ?? state.user.stats.linearGamesWon,
@@ -110,7 +110,7 @@ class Profile extends StatelessWidget {
                           FunctionColors.one,
                           ignorePointer: true,
                           child: ModeContent(
-                            Difficultie.quadratic,
+                            Difficulty.quadratic,
                             values: [
                               stats?.quadraticGamesPlayed ?? state.user.stats.quadraticGamesPlayed,
                               stats?.quadraticGamesWon ?? state.user.stats.quadraticGamesWon,
@@ -123,7 +123,7 @@ class Profile extends StatelessWidget {
                           FunctionColors.three,
                           ignorePointer: true,
                           child: ModeContent(
-                            Difficultie.cubic,
+                            Difficulty.cubic,
                             values: [
                               stats?.cubicGamesPlayed ?? state.user.stats.cubicGamesPlayed,
                               stats?.cubicGamesWon ?? state.user.stats.cubicGamesWon,
@@ -156,7 +156,7 @@ class StatItem extends Row {
             if (onContainer)
               WhiteText(
                 fontSize: Lobby.subtitleFontSize,
-                title: title,
+                text: title,
               )
             else
               BlackText(fontSize: Lobby.subtitleFontSize, text: title),

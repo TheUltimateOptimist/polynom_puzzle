@@ -33,9 +33,16 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
 @override
   void initState() {
    t = Timer.periodic(Duration(seconds: 2), (timer) {
+ 
      context.read<GameCubit>().updateOpponent();
    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    t.cancel();
+    super.dispose();
   }
 
   @override

@@ -77,12 +77,12 @@ Future<Game> getMultiPlayerGame(Game game) async{
   }
 }
 
-Future<Game> getWithFriendGame(Game? game) async{
+Future<Game> getWithFriendGame(Game? game, int? gameId) async{
   if(game != null){
     return await _getNewGame(game);
   }
   else{
-    var docs = (await games.where("gameId", isEqualTo: game!.gameId).limit(1).get()).docs;
+    var docs = (await games.where("gameId", isEqualTo: gameId).limit(1).get()).docs;
     if(docs.length == 0){
       throw Exception("No Game found");
     }

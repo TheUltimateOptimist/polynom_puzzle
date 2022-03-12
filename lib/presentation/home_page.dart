@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
 import 'package:polynom_puzzle/logic/blocs/user_state.dart';
 import 'package:polynom_puzzle/presentation/lobby.dart';
@@ -10,6 +11,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Sizes.totalHeight = MediaQuery.of(context).size.height;
+    Sizes.totalWidth = MediaQuery.of(context).size.width;
     return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {
         if (state.errorMessage != null) {

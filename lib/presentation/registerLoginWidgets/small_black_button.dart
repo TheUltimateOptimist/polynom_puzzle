@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:polynom_puzzle/presentation/Widgets/white_text.dart';
+
+import '../textStyles/wihte_text.dart';
 
 class SmallBlackButton extends StatelessWidget {
   const SmallBlackButton(
@@ -24,7 +25,7 @@ class SmallBlackButton extends StatelessWidget {
             margin: EdgeInsets.only(
               bottom: height / 20,
             ),
-            child: WhiteText(fontSize: fontSize, title: title)),
+            child: WhiteText(fontSize: fontSize, text: title)),
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           primary: Colors.black,

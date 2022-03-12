@@ -5,13 +5,16 @@ import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
 import 'package:polynom_puzzle/logic/blocs/user_state.dart';
 import 'package:polynom_puzzle/logic/models/game.dart';
+import 'package:polynom_puzzle/logic/models/user.dart';
 import 'package:polynom_puzzle/presentation/colored_container.dart';
+import 'package:polynom_puzzle/presentation/finding_opponent_dialog.dart';
 import 'package:polynom_puzzle/presentation/playing.dart';
 import 'package:polynom_puzzle/presentation/profile.dart';
 import 'package:polynom_puzzle/presentation/ranking.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
 import 'package:polynom_puzzle/presentation/top_row.dart';
+import 'package:polynom_puzzle/presentation/with_friend_dialog.dart';
 
 import 'container_content.dart';
 
@@ -21,10 +24,24 @@ abstract class Modes {
   static const String withFriend = "Play with friend";
 }
 
-abstract class Difficultie {
+abstract class Difficulty {
   static const String linear = "linear";
   static const String quadratic = "quadratic";
   static const String cubic = "cubic";
+
+  static int fromString(String difficulty) {
+    switch (difficulty) {
+      case "linear":
+        return 1;
+      case "quadratic":
+        return 2;
+      case "cubic":
+        return 3;
+      default:
+        throw Exception(
+            "Error: difficulty could not be resolved from reference");
+    }
+  }
 }
 
 class Lobby extends StatelessWidget {
@@ -83,12 +100,14 @@ class Lobby extends StatelessWidget {
                       child: ModeContent(
                         Modes.singlePlayer,
                       ),
-                      onPressed: (){
+                      onPressed: () {
                         Game game = Game.singlePlayer(1);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Playing(game: game,),
+                            builder: (context) => Playing(
+                              game: game,
+                            ),
                           ),
                         );
                       },
@@ -98,14 +117,24 @@ class Lobby extends StatelessWidget {
                       child: ModeContent(
                         Modes.multiPlayer,
                       ),
-                      onPressed: () async{
-                        Game game = await Game.multiPlayer(1);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Playing(game: game),
+                      onPressed: () async {
+                        Game? result = await showDialog(
+                          context: context,
+                          builder: (context) => FindingOpponentDialog(
+                            difficulty: Difficulty.fromString(
+                              PuzzleUser().multiPlayerDifficulty,
+                            ),
                           ),
                         );
+                        print(result);
+                        if (result != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Playing(game: result),
+                            ),
+                          );
+                        }
                       },
                     ),
                     ColoredContainer(
@@ -113,15 +142,33 @@ class Lobby extends StatelessWidget {
                       child: ModeContent(
                         Modes.withFriend,
                       ),
-                      onPressed: () async{
-                        int gameId = Game.generateId();
-                        Game game = await Game.withFriend(1, gameId);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Playing(game: game),
-                          ),
+                      onPressed: () async {
+                        Map<String, int?>? data = await showDialog(
+                          context: context,
+                          builder: (context) => WithFriendDialog(),
                         );
+                        if (data != null) {
+                          Game? game = await showDialog(
+                            context: context,
+                            builder: (context) => FindingOpponentDialog(
+                              difficulty: Difficulty.fromString(
+                                PuzzleUser().withFriendDifficulty,
+                              ),
+                              isFriend: true,
+                              gameId: data["gameId"],
+                            ),
+                          );
+                          if (game != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Playing(
+                                  game: game,
+                                ),
+                              ),
+                            );
+                          }
+                        }
                       },
                     ),
                   ],
@@ -143,15 +190,15 @@ class ModeContent extends ContainerContent {
           children: [
             SelectionRow(
               mode: title,
-              title: Difficultie.linear,
+              title: Difficulty.linear,
             ),
             SelectionRow(
               mode: title,
-              title: Difficultie.quadratic,
+              title: Difficulty.quadratic,
             ),
             SelectionRow(
               mode: title,
-              title: Difficultie.cubic,
+              title: Difficulty.cubic,
             ),
           ],
         );

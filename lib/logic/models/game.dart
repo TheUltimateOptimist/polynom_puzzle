@@ -93,14 +93,14 @@ class Game {
     return await BackEnd().getMultiPlayerGame(game);
   }
 
-  static Future<Game> withFriend(int difficulty, int? gameId) async{
-    if(gameId != null){
+  static Future<Game> withFriend(int difficulty, int gameId, bool isNew) async{
+    if(isNew){
     PolynomialPuzzle puzzle = PolynomialPuzzle.random(degree: difficulty);
     Game game = Game(mode: 3, difficulty: difficulty, firstPlayerName: PuzzleUser().name, firstPlayerTrophyCount: PuzzleUser().trophyCount, status: 1, firstPlayerPuzzle: puzzle, secondPlayerPuzzle: puzzle, gameId: gameId, );
-    return await BackEnd().getWithFriendGame(game);
+    return await BackEnd().getWithFriendGame(game, null);
     }
     else{
-      return await BackEnd().getWithFriendGame(null);
+      return await BackEnd().getWithFriendGame(null, gameId);
     }
   }
 

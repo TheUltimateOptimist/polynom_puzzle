@@ -15,4 +15,9 @@ class BlackText extends StatelessWidget {
             fontSize: fontSize,
             fontFamily: "Noteworthy-Light"));
   }
+
+  static TextStyle style(double fontSize){ 
+    return TextStyle(color: Colors.black,
+            fontSize: fontSize,
+            fontFamily: "Noteworthy-Light");}
 }

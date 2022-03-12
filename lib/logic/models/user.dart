@@ -14,9 +14,9 @@ class PuzzleUser {
   int trophyCount = 2000;
   String name = "Guest";
   Stats stats = Stats();
-  String singlePlayerDifficulty = Difficultie.linear;
-  String multiPlayerDifficulty = Difficultie.linear;
-  String withFriendDifficulty = Difficultie.linear;
+  String singlePlayerDifficulty = Difficulty.linear;
+  String multiPlayerDifficulty = Difficulty.linear;
+  String withFriendDifficulty = Difficulty.linear;
 
   factory PuzzleUser() {
     return _user;

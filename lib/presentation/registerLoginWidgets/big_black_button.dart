@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
 
 class BigBlackButton extends StatelessWidget {
-  const BigBlackButton({required this.onPressed, this.color = Colors.black,this.title = "", this.child,Key? key})
+  const BigBlackButton({required this.onPressed, this.color = Colors.black,this.title = "", this.child,Key? key, this.w})
       : super(key: key);
 
   final String title;
   final void Function() onPressed;
   final Widget? child;
   final Color color;
+  final double? w;
 
   static const double fontSize = 25;
   static const double width = 450;
@@ -17,7 +18,7 @@ class BigBlackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: width, height: height,
+    return SizedBox(width: w ?? width, height: height,
       child: ElevatedButton(
         child: child == null ? WhiteBoldText(fontSize: fontSize, text: title) : child,
         onPressed: onPressed,
