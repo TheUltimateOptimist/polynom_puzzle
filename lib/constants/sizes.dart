@@ -1,9 +1,16 @@
 
+import 'package:flutter/material.dart';
+
 class Sizes{
   static bool onMobile = false;
 
   static double totalWidth = 1000;
   static double totalHeight = 1000;
+  static void update(BuildContext context){
+    totalWidth = MediaQuery.of(context).size.width;
+    totalHeight = MediaQuery.of(context).size.height;
+
+  }
 
   //returns true if the newValue is not equal to the old value
  static bool setOnMobile(bool newValue){
@@ -16,6 +23,26 @@ class Sizes{
       return true;
     }
     return false;
+  }
+
+  static double get multiplierStrong{
+    if(totalWidth < 1010){
+      return 0.7;
+    }
+    else if(totalWidth < 1160){
+      return 0.8;
+    }
+    return 1;
+  }
+
+  static double get multiplierLight{
+     if(totalWidth < 1010){
+      return 0.8;
+    }
+    else if(totalWidth < 1160){
+      return 0.9;
+    }
+    return 1;
   }
   
   static double titleSize(){
@@ -53,6 +80,8 @@ class Sizes{
   static double dialogInfoSize(){
     return onMobile ? 20 : 30;
   }
+
+  
 
 
 }

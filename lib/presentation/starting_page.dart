@@ -14,6 +14,7 @@ class StartingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  print(MediaQuery.of(context).size.width);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -68,7 +69,7 @@ class StartingPage extends StatelessWidget {
                     ),
                     child: RegisterLoginLayout(
                       isRegister: true,
-                    )),
+                    ),),
               ),
             ],
           ),

@@ -11,8 +11,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Sizes.totalHeight = MediaQuery.of(context).size.height;
-    Sizes.totalWidth = MediaQuery.of(context).size.width;
+    
+    Sizes.update(context);
     return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {
         if (state.errorMessage != null) {

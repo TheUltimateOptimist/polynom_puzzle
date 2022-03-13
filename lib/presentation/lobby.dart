@@ -16,6 +16,7 @@ import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
 import 'package:polynom_puzzle/presentation/top_row.dart';
 import 'package:polynom_puzzle/presentation/with_friend_dialog.dart';
 
+import '../constants/sizes.dart';
 import 'container_content.dart';
 
 abstract class Modes {
@@ -55,11 +56,13 @@ class Lobby extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
+    Sizes.update(context);
     return SafeArea(
       child: Scaffold(
         body: Center(
           child: Container(
-            width: pageWidth,
+            width: pageWidth*Sizes.multiplierLight,
             height: pageHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

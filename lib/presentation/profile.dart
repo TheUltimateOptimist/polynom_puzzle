@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
 import 'package:polynom_puzzle/logic/blocs/user_state.dart';
 import 'package:polynom_puzzle/logic/models/backEnd.dart';
@@ -34,11 +35,12 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Sizes.update(context);
     return SafeArea(
       child: Scaffold(
         body: Center(
           child: Container(
-            width: Lobby.pageWidth,
+            width: Lobby.pageWidth*Sizes.multiplierLight,
             height: Lobby.pageHeight,
             child: BlocBuilder<UserCubit, UserState>(
               builder: (context, state) {

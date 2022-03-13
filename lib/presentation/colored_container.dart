@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/sizes.dart';
+
 class ColoredContainer extends Container {
   static const double sideLength = 300;
   static const double cornerRadius = 10;
@@ -7,7 +9,7 @@ class ColoredContainer extends Container {
   ColoredContainer(Color color,
       {Widget? child, final void Function()? onPressed, final bool ignorePointer = false,})
       : super(
-          width: sideLength,
+          width: sideLength*Sizes.multiplierLight,
           height: sideLength,
           color: Colors.transparent,
           child: IgnorePointer(ignoring: ignorePointer,

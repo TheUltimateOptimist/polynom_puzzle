@@ -6,16 +6,18 @@ import 'package:polynom_puzzle/presentation/pokes.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_bold_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_text.dart';
 
+import '../../constants/sizes.dart';
+
 class PlayerRow extends StatelessWidget {
   const PlayerRow({Key? key}) : super(key: key);
 
-  static const double marginBetween = 5;
-  static const double playerNameSize = 25;
+  static  double marginBetween = 5;
+  static  double playerNameSize = 25;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SlidePuzzle.puzzleHeight,
+      height: SlidePuzzle.puzzleHeight*Sizes.multiplierStrong,
       child: BlocBuilder<GameCubit, GameState>(
         builder: (context, state) {
           return Column(
@@ -25,7 +27,7 @@ class PlayerRow extends StatelessWidget {
                 state.game.firstPlayerTrophyCount,
               ),
               BlackBoldText(
-                fontSize: 25,
+                fontSize: Sizes.multiplierStrong*25,
                 text: "vs.",
               ),
               PlayerColumn(
@@ -42,19 +44,19 @@ class PlayerRow extends StatelessWidget {
 }
 
 class PlayerColumn extends Column {
-  PlayerColumn(final String name, final int trophyCount)
+  PlayerColumn(final String name, final int trophyCount, )
       : super(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             BlackText(
-              fontSize: PlayerRow.playerNameSize,
+              fontSize: Sizes.multiplierStrong*PlayerRow.playerNameSize,
               text: name + ":",
             ),
             Container(
-              height: PlayerRow.marginBetween,
+              height:  Sizes.multiplierStrong*PlayerRow.marginBetween,
             ),
-            Pokes(),
+            Pokes(multiplier: Sizes.multiplierStrong),
           ],
         );
 }

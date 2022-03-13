@@ -8,6 +8,7 @@ import 'package:polynom_puzzle/presentation/Widgets/visualization.dart';
 import 'package:polynom_puzzle/presentation/lobby.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_text.dart';
 
+import '../constants/sizes.dart';
 import '../logic/models/game.dart';
 
 class Playing extends StatelessWidget {
@@ -18,6 +19,8 @@ class Playing extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    print(height);
+    print(width);
     return SafeArea(
       child: Scaffold(
         body: BlocProvider<GameCubit>(
@@ -41,8 +44,9 @@ class Playing extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (game.mode > 1) PlayerRow(),
+                      if(game.mode > 1)
                       Container(
-                        width: 40,
+                        width: 40*Sizes.multiplierStrong,
                       ),
                       SlidePuzzle(),
                     ],

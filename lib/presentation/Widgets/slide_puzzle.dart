@@ -11,6 +11,8 @@ import 'package:polynom_puzzle/logic/models/puzzle.dart';
 import 'package:polynom_puzzle/presentation/Widgets/slide_tile.dart';
 import 'package:polynom_puzzle/presentation/end_dialog.dart';
 
+import '../../constants/sizes.dart';
+
 class SlidePuzzle extends StatefulWidget {
   const SlidePuzzle({
     Key? key,
@@ -85,14 +87,14 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
       },
       builder: (context, state) {
         return Container(
-          height: SlidePuzzle.puzzleHeight,
-          width: SlidePuzzle.puzzleWidth,
+          height: SlidePuzzle.puzzleHeight*Sizes.multiplierStrong,
+          width: SlidePuzzle.puzzleWidth*Sizes.multiplierStrong,
           child: Stack(
             children: [
               for (FunctionPart part in state.game.firstPlayerPuzzle.parts)
                 AnimatedPositioned(
-                  left: part.leftDistance,
-                  top: part.topDistance,
+                  left: part.leftDistance*Sizes.multiplierStrong,
+                  top: part.topDistance*Sizes.multiplierStrong,
                   duration: Duration(
                     milliseconds: SlidePuzzle.animationDuration,
                   ),
@@ -107,7 +109,7 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
                         context.read<GameCubit>().selectFirst(part);
                       }
                     },
-                    height: SlidePuzzle.tileHeight,
+                    height: SlidePuzzle.tileHeight*Sizes.multiplierStrong,
                   ),
                 ),
             ],

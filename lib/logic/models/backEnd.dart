@@ -6,6 +6,8 @@ class BackEnd{
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late CollectionReference users;
   late CollectionReference games;
+  int? rank;
+  DateTime? lastUpdate;
 
   BackEnd._privateConstructor();
   static final BackEnd _instance = BackEnd._privateConstructor();
@@ -17,8 +19,12 @@ void initialize(){
 }
 
 Future<int> getRank(int trophyCount) async{
+  if(lastUpdate == null || DateTime.now().difference(lastUpdate!).inSeconds > 10){
   var playersAbove = await users.where("trophyCount", isGreaterThan: trophyCount).get();
-  return playersAbove.size + 1;
+  lastUpdate = DateTime.now();
+  rank = playersAbove.size + 1;
+  }
+  return rank!;
 }
 
 Future<Map<String, dynamic>> getUser() async{
