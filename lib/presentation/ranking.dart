@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/function_colors.dart';
 import 'package:polynom_puzzle/logic/blocs/user_cubit.dart';
 import 'package:polynom_puzzle/logic/blocs/user_state.dart';
@@ -8,6 +9,7 @@ import 'package:polynom_puzzle/logic/models/stats.dart';
 import 'package:polynom_puzzle/presentation/colored_container.dart';
 import 'package:polynom_puzzle/presentation/pokes.dart';
 import 'package:polynom_puzzle/presentation/profile.dart';
+import 'package:polynom_puzzle/presentation/puzzle_navigation_bar.dart';
 import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/wihte_text.dart';
 
@@ -20,7 +22,7 @@ class Ranking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: Scaffold(bottomNavigationBar: Sizes.onMobile ? PuzzleNavigationBar(index: 2) : null,
         body: Container(
           color: Color.fromRGBO(
             0,

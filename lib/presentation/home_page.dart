@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
       builder: (context, state) {
         print(state.user.user);
         if (state.user.user != null) {
-          return const Lobby();
+          return  Lobby();
         } else {
           return const StartingPage();
         }

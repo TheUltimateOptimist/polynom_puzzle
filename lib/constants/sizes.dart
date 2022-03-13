@@ -9,6 +9,12 @@ class Sizes{
   static void update(BuildContext context){
     totalWidth = MediaQuery.of(context).size.width;
     totalHeight = MediaQuery.of(context).size.height;
+    if(totalHeight > totalWidth){
+      setOnMobile(true);
+    }
+    else{
+      setOnMobile(false);
+    }
 
   }
 

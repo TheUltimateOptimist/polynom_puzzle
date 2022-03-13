@@ -4,11 +4,12 @@ import '../../function_colors.dart';
 
 class InputField extends StatelessWidget {
   const InputField(
-      {required this.hintText, required this.textEditingController, Key? key})
+      {required this.hintText, required this.textEditingController, this.onTap,Key? key})
       : super(key: key);
 
   final TextEditingController textEditingController;
   final String hintText;
+  final void Function()? onTap;
 
   static const double inputFontSize = 20;
   static const double hintFontSize = 15;
@@ -16,7 +17,7 @@ class InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: TextField(cursorColor: FunctionColors.one,
+      child: TextField(cursorColor: FunctionColors.one,clipBehavior: Clip.none,onTap: onTap,
         controller: textEditingController,
         style: TextStyle(
             fontSize: inputFontSize,

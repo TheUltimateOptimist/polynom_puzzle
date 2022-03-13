@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:polynom_puzzle/presentation/lobby.dart';
 
 import '../constants/sizes.dart';
 
@@ -9,7 +10,7 @@ class ColoredContainer extends Container {
   ColoredContainer(Color color,
       {Widget? child, final void Function()? onPressed, final bool ignorePointer = false,})
       : super(
-          width: sideLength*Sizes.multiplierLight,
+          width: !Sizes.onMobile ? sideLength*Sizes.multiplierLight : sideLength*Lobby.heightWidthRatio,
           height: sideLength,
           color: Colors.transparent,
           child: IgnorePointer(ignoring: ignorePointer,

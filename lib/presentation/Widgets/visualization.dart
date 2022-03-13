@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/logic/blocs/game_cubit.dart';
 import 'package:polynom_puzzle/presentation/Widgets/coordinate_system/function_painter.dart';
 import 'package:polynom_puzzle/presentation/Widgets/function_name.dart';
@@ -13,7 +14,7 @@ class Visualization extends StatelessWidget {
   const Visualization({required this.width, required this.height, Key? key})
       : super(key: key);
 
-  static const int pixelPerUnit = 20;
+  static  int pixelPerUnit = Sizes.onMobile ? 15 : 20;
   static const double systemMargin = 5;
 
   @override

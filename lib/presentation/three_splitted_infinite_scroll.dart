@@ -176,9 +176,8 @@ class _ThreeSplittedInfiniteScrollState
                           borderRadius: widget.borderRadius),
                       height: widget.maxHeight * widget.maxShrinkPercentage +
                           calculatedAdditionalHeight(relevantOffset, index),
-                      width: widget.maxHeight * widget.heightWidthRatio,
+                      width: widget.maxHeight * widget.heightWidthRatio,child: calculatedChildren(relevantOffset, index)
                     ),
-                    calculatedChildren(relevantOffset, index),
                   ],
                 ),
               );

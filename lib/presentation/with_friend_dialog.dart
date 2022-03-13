@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/presentation/base_dialog.dart';
 import 'package:polynom_puzzle/presentation/registerLoginWidgets/input_field.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_bold_text.dart';
@@ -11,7 +12,7 @@ class WithFriendDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseDialog(
-      additionalMargin: 50,
+      additionalMargin: !Sizes.onMobile ? 50 : 0,
       child: Column(crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           BlackBoldText(fontSize: 30, text: "Play with Friend"),
@@ -20,15 +21,20 @@ class WithFriendDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BlackText(fontSize: 20, text: "GameId: "),
+              if(!Sizes.onMobile)
               Container(
                 height: 10,
               ),
-              InputField(
+              InputField(onTap: (){
+                print("ksdjflksdjfklasdjfkljsdlfkjdsklfj");
+                
+              },
                 hintText: "Enter gameId to join game",
                 textEditingController: controller,
               ),
             ],
           ),
+          if(!Sizes.onMobile)
           BlackText(
             fontSize: 15,
             text:
@@ -78,7 +84,7 @@ class SelectButton extends ElevatedButton {
       : super(
           onPressed: onPressed,
           child: WhiteBoldText(
-            fontSize: 25,
+            fontSize: !Sizes.onMobile ? 25 : 20,
             text: title,
           ),
           style: ElevatedButton.styleFrom(
@@ -91,8 +97,8 @@ class SelectButton extends ElevatedButton {
               ),
             ),
             minimumSize: Size(
-              150,
-              65,
+              (Sizes.onMobile ? 0.8 : 1)*150,
+              (Sizes.onMobile ? 0.8 : 1)*65,
             ),
           ),
         );

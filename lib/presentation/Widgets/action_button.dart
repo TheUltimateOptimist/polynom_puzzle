@@ -20,7 +20,7 @@ class ActionButton extends StatelessWidget {
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
-            16,
+            10,
           ),
         ),
       ),

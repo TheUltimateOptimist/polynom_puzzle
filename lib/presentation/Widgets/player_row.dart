@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/logic/blocs/game_cubit.dart';
 import 'package:polynom_puzzle/presentation/Widgets/slide_puzzle.dart';
 import 'package:polynom_puzzle/presentation/pokes.dart';
+import 'package:polynom_puzzle/presentation/row_column_listView.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_bold_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_text.dart';
 
@@ -17,17 +18,17 @@ class PlayerRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SlidePuzzle.puzzleHeight*Sizes.multiplierStrong,
+      height: !Sizes.onMobile ? SlidePuzzle.puzzleHeight*Sizes.multiplierStrong : null,width: Sizes.onMobile ? SlidePuzzle.puzzleHeight*Sizes.multiplierStrong : null,
       child: BlocBuilder<GameCubit, GameState>(
         builder: (context, state) {
-          return Column(
+          return RowColumnListView(collectionType: Sizes.onMobile ? Collection.row : Collection.column,
             children: [
               PlayerColumn(
                 state.game.firstPlayerName,
                 state.game.firstPlayerTrophyCount,
               ),
               BlackBoldText(
-                fontSize: Sizes.multiplierStrong*25,
+                fontSize: !Sizes.onMobile ? Sizes.multiplierStrong*25 : 0.9*25,
                 text: "vs.",
               ),
               PlayerColumn(
@@ -50,13 +51,13 @@ class PlayerColumn extends Column {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             BlackText(
-              fontSize: Sizes.multiplierStrong*PlayerRow.playerNameSize,
+              fontSize: !Sizes.onMobile ? Sizes.multiplierStrong*PlayerRow.playerNameSize : PlayerRow.playerNameSize*0.8,
               text: name + ":",
             ),
             Container(
-              height:  Sizes.multiplierStrong*PlayerRow.marginBetween,
+              height:  !Sizes.onMobile ? Sizes.multiplierStrong*PlayerRow.playerNameSize : 0,
             ),
-            Pokes(multiplier: Sizes.multiplierStrong),
+            Pokes(multiplier: !Sizes.onMobile ? Sizes.multiplierStrong : 0.9, ),
           ],
         );
 }

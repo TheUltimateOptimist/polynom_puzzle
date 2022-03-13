@@ -8,8 +8,11 @@ import 'package:polynom_puzzle/logic/models/game.dart';
 import 'package:polynom_puzzle/logic/models/user.dart';
 import 'package:polynom_puzzle/presentation/colored_container.dart';
 import 'package:polynom_puzzle/presentation/finding_opponent_dialog.dart';
+import 'package:polynom_puzzle/presentation/mobile_scroll.dart';
 import 'package:polynom_puzzle/presentation/playing.dart';
 import 'package:polynom_puzzle/presentation/profile.dart';
+import 'package:polynom_puzzle/presentation/puzzle_app_bar.dart';
+import 'package:polynom_puzzle/presentation/puzzle_navigation_bar.dart';
 import 'package:polynom_puzzle/presentation/ranking.dart';
 import 'package:polynom_puzzle/presentation/textStyles/black_text.dart';
 import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
@@ -45,139 +48,167 @@ abstract class Difficulty {
   }
 }
 
+// ignore: must_be_immutable
 class Lobby extends StatelessWidget {
-  const Lobby({Key? key}) : super(key: key);
+  Lobby({Key? key}) : super(key: key);
 
   static const double subtitleFontSize = 20;
   static const double categoryFontSize = 30;
   static const double difficultyFontSize = 20;
   static const double pageWidth = 1000;
   static const double pageHeight = 600;
-
+  static const double menuSize = 25;
+  static const double heightWidthRatio = 0.8;
   @override
   Widget build(BuildContext context) {
     print(MediaQuery.of(context).size.width);
     Sizes.update(context);
+
+    List<Widget> children = [
+      ColoredContainer(
+        FunctionColors.two,
+        child: ModeContent(
+          Modes.singlePlayer,
+        ),
+        onPressed: () {
+          Game game = Game.singlePlayer(1);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Playing(
+                game: game,
+              ),
+            ),
+          );
+        },
+      ),
+      ColoredContainer(
+        FunctionColors.one,
+        child: ModeContent(
+          Modes.multiPlayer,
+        ),
+        onPressed: () async {
+          Game? result = await showDialog(
+            context: context,
+            builder: (context) => FindingOpponentDialog(
+              difficulty: Difficulty.fromString(
+                PuzzleUser().multiPlayerDifficulty,
+              ),
+            ),
+          );
+          print(result);
+          if (result != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Playing(game: result),
+              ),
+            );
+          }
+        },
+      ),
+      ColoredContainer(
+        FunctionColors.three,
+        child: ModeContent(
+          Modes.withFriend,
+        ),
+        onPressed: () async {
+          Map<String, int?>? data = await showDialog(
+            context: context,
+            builder: (context) => WithFriendDialog(),
+          );
+          if (data != null) {
+            Game? game = await showDialog(
+              context: context,
+              builder: (context) => FindingOpponentDialog(
+                difficulty: Difficulty.fromString(
+                  PuzzleUser().withFriendDifficulty,
+                ),
+                isFriend: true,
+                gameId: data["gameId"],
+              ),
+            );
+            if (game != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Playing(
+                    game: game,
+                  ),
+                ),
+              );
+            }
+          }
+        },
+      ),
+    ];
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: Sizes.onMobile
+            ? PuzzleNavigationBar(
+                index: 1,
+              )
+            : null,
+        backgroundColor: Colors.white,
+        appBar: Sizes.onMobile ? PuzzleAppBar("Polynom Puzzle") : null,
         body: Center(
-          child: Container(
-            width: pageWidth*Sizes.multiplierLight,
-            height: pageHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TopRow(
-                  firstPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Ranking()));
-                  },
-                  secondPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Profile()));
-                  },
-                  title: "Polynom Puzzle",
-                  first: "Rangliste",
-                  second: "My Profile",
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BlackText(
-                      fontSize: subtitleFontSize,
-                      text:
-                          "Let's go! Prove your math skills solving the Polynom Puzzle in either",
-                    ),
-                    BlackText(
-                      fontSize: subtitleFontSize,
-                      text:
-                          "Single- or Multiplayer Mode. Or challenge a friend. Just Have fun!",
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    ColoredContainer(
-                      FunctionColors.two,
-                      child: ModeContent(
-                        Modes.singlePlayer,
-                      ),
-                      onPressed: () {
-                        Game game = Game.singlePlayer(1);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Playing(
-                              game: game,
-                            ),
-                          ),
-                        );
+          child: SingleChildScrollView(
+            child: Container(
+              width: !Sizes.onMobile
+                  ? pageWidth * Sizes.multiplierLight
+                  : Sizes.totalWidth,
+              height: !Sizes.onMobile ? pageHeight : Sizes.totalHeight - PuzzleAppBar.height - 40,
+              child: Column(
+                crossAxisAlignment: !Sizes.onMobile
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.center,
+                mainAxisAlignment: !Sizes.onMobile
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.spaceEvenly,
+                children: [
+                  if (!Sizes.onMobile)
+                    TopRow(
+                      firstPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Ranking()));
                       },
-                    ),
-                    ColoredContainer(
-                      FunctionColors.one,
-                      child: ModeContent(
-                        Modes.multiPlayer,
-                      ),
-                      onPressed: () async {
-                        Game? result = await showDialog(
-                          context: context,
-                          builder: (context) => FindingOpponentDialog(
-                            difficulty: Difficulty.fromString(
-                              PuzzleUser().multiPlayerDifficulty,
-                            ),
-                          ),
-                        );
-                        print(result);
-                        if (result != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Playing(game: result),
-                            ),
-                          );
-                        }
+                      secondPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Profile()));
                       },
+                      title: "Polynom Puzzle",
+                      first: "Rangliste",
+                      second: "My Profile",
                     ),
-                    ColoredContainer(
-                      FunctionColors.three,
-                      child: ModeContent(
-                        Modes.withFriend,
-                      ),
-                      onPressed: () async {
-                        Map<String, int?>? data = await showDialog(
-                          context: context,
-                          builder: (context) => WithFriendDialog(),
-                        );
-                        if (data != null) {
-                          Game? game = await showDialog(
-                            context: context,
-                            builder: (context) => FindingOpponentDialog(
-                              difficulty: Difficulty.fromString(
-                                PuzzleUser().withFriendDifficulty,
-                              ),
-                              isFriend: true,
-                              gameId: data["gameId"],
-                            ),
-                          );
-                          if (game != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Playing(
-                                  game: game,
-                                ),
-                              ),
-                            );
-                          }
-                        }
-                      },
+                  Container(margin: Sizes.onMobile ? EdgeInsets.symmetric(horizontal: 20,) : null,
+                    child: Column(mainAxisSize: Sizes.onMobile ? MainAxisSize.min : MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BlackText(
+                          fontSize: subtitleFontSize,
+                          text: !Sizes.onMobile ? 
+                              "Let's go! Prove your math skills solving the Polynom Puzzle in either" : "Let's go! Prove your math skills solving the Polynom Puzzle in either Single- or Multiplayer Mode. Or challenge a friend. Just Have fun!",
+                        ),
+                        if(!Sizes.onMobile)
+                        BlackText(
+                          fontSize: subtitleFontSize,
+                          text:
+                              "Single- or Multiplayer Mode. Or challenge a friend. Just Have fun!",
+                        ),
+                      ],
                     ),
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                ),
-              ],
+                  ),
+                  if (!Sizes.onMobile)
+                    Row(
+                      children: children,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    )
+                  else
+                    MobileScroll(
+                      children,
+                    ),
+                ],
+              ),
             ),
           ),
         ),
