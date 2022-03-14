@@ -127,9 +127,11 @@ String docId = await postGame(game);
 }
 
 Future<Game> _getExistingGame(List<QueryDocumentSnapshot<Object?>> docs) async{
+
 Game updatedGame = Game.fromMap(docs[0].data() as Map<String, dynamic>);
-    updatedGame.secondPayerName = PuzzleUser().name;
-    updatedGame.secondPlayerTrophyCount = PuzzleUser().trophyCount;
+updatedGame.isInverted = true;
+    updatedGame.firstPlayerName = PuzzleUser().name;
+    updatedGame.firstPlayerTrophyCount = PuzzleUser().trophyCount;
     updatedGame.docId = docs[0].id;
     updatedGame.status = 2;
     await games.doc(docs[0].id).set(updatedGame.toMap());

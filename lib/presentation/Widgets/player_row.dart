@@ -32,7 +32,7 @@ class PlayerRow extends StatelessWidget {
                 text: "vs.",
               ),
               PlayerColumn(
-                state.game.secondPayerName!,
+                state.game.secondPlayerName!,
                 state.game.secondPlayerTrophyCount!,
               ),
             ],
