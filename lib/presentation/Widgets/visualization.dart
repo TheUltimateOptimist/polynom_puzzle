@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/constants/sizes.dart';
 import 'package:polynom_puzzle/logic/blocs/game_cubit.dart';
-import 'package:polynom_puzzle/presentation/Widgets/coordinate_system/function_painter.dart';
+import 'package:polynom_puzzle/presentation/Widgets/function_painter.dart';
 import 'package:polynom_puzzle/presentation/Widgets/function_name.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -28,8 +28,7 @@ class Visualization extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               SfCartesianChart(
-                legend:
-                    Legend(isVisible: true, title: LegendTitle(text: "TOT")),
+               
                 margin: EdgeInsets.all(
                   systemMargin,
                 ),

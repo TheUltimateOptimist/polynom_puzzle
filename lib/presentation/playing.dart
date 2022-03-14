@@ -24,6 +24,8 @@ class Playing extends StatelessWidget {
       child: Scaffold(
         body: BlocProvider<GameCubit>(
           create: (context) {
+            GameCubit cubit = GameCubit(game);
+            cubit.updateOpponent();
             return GameCubit(game);
           },
           child: RowColumnListView(collectionType: Sizes.onMobile ? Collection.column : Collection.row,
@@ -60,8 +62,8 @@ class Playing extends StatelessWidget {
                 ),
               ),
               Visualization(
-                width: Sizes.totalWidth,
-                height: Sizes.totalHeight / 2.5,
+                width: Sizes.onMobile ? Sizes.totalWidth : Sizes.totalWidth / 2,
+                height: Sizes.onMobile ? Sizes.totalHeight / 2.5 : Sizes.totalHeight,
               ),
             ],
           ),

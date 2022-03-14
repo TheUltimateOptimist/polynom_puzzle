@@ -16,7 +16,6 @@ class StartingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Sizes.update(context);
-    print(MediaQuery.of(context).size.width);
     if (!Sizes.onMobile) {
       return SafeArea(
         child: Scaffold(

@@ -9,10 +9,11 @@ import 'package:polynom_puzzle/presentation/with_friend_dialog.dart';
 import '../logic/models/game.dart';
 
 class FindingOpponentDialog extends StatefulWidget {
+  static bool isActive = false;
   final int difficulty;
   final bool isFriend;
   final int? gameId;
-  const FindingOpponentDialog(
+   FindingOpponentDialog(
       {Key? key, required this.difficulty, this.isFriend = false, this.gameId})
       : super(key: key);
 
@@ -27,6 +28,7 @@ class _FindingOpponentDialogState extends State<FindingOpponentDialog> {
 
   @override
   void initState() {
+    FindingOpponentDialog.isActive = true;
     if (widget.isFriend && widget.gameId == null) {
       generatedGameId = Game.generateId();
     }
@@ -42,6 +44,7 @@ class _FindingOpponentDialogState extends State<FindingOpponentDialog> {
   @override
   void dispose() {
     t?.cancel();
+    FindingOpponentDialog.isActive = false;
     super.dispose();
   }
 

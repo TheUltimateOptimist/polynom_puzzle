@@ -31,28 +31,11 @@ class SlidePuzzle extends StatefulWidget {
 }
 
 class _SlidePuzzleState extends State<SlidePuzzle> {
-  late Timer t;
-@override
-  void initState() {
-   t = Timer.periodic(Duration(seconds: 2), (timer) {
- 
-     context.read<GameCubit>().updateOpponent();
-   });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    t.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<GameCubit, GameState>(
       listener: (context, state) {
         if (state.hasWon != null && state.hasWon!) {
-          t.cancel();
           context.read<UserCubit>().puzzleFinished(state.game);
           Navigator.pop(context);
           showDialog(
@@ -69,7 +52,6 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
           );
         }
         else if(state.hasWon != null && !state.hasWon!){
-          t.cancel();
           context.read<UserCubit>().puzzleFinished(state.game);
           Navigator.pop(context);
           showDialog(

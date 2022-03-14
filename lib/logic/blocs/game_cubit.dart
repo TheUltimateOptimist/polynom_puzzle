@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polynom_puzzle/logic/models/backEnd.dart';
 import 'package:polynom_puzzle/logic/models/function_part.dart';
@@ -58,8 +60,11 @@ class GameCubit extends Cubit<GameState> {
   }
 
   Future<void> updateOpponent() async {
-    if(state.game.mode > 1){
+    Timer t = Timer.periodic(Duration(seconds: 3,), (timer) async{
+      if(state.game.mode > 1){
     await state.game.syncOpponentPuzzle();
+    print("Synced");
+    print(state.game.secondPlayerPuzzle!.getCurrentFunction().toString());
     if (state.game.secondPlayerPuzzle!.isSolved()) {
       emit(
         GameState(
@@ -76,5 +81,7 @@ class GameCubit extends Cubit<GameState> {
         ),
       );
     }
-  }}
-}
+  }
+    });
+    
+}}

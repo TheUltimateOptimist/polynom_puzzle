@@ -82,7 +82,6 @@ class PuzzleUser {
       await initializeUserData();
       return null;
     } on FirebaseAuthException catch (e) {
-      print(e.code);
       if (e.code == "wrong-password") {
         passwordController.clear();
         return "Wrong password";

@@ -61,7 +61,6 @@ class Lobby extends StatelessWidget {
   static const double heightWidthRatio = 0.8;
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
     Sizes.update(context);
 
     List<Widget> children = [
@@ -96,7 +95,6 @@ class Lobby extends StatelessWidget {
               ),
             ),
           );
-          print(result);
           if (result != null) {
             Navigator.push(
               context,

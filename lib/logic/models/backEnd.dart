@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:polynom_puzzle/logic/models/game.dart';
 import 'package:polynom_puzzle/logic/models/user.dart';
+import 'package:polynom_puzzle/presentation/finding_opponent_dialog.dart';
 
 class BackEnd{
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -32,7 +33,6 @@ Future<Map<String, dynamic>> getUser() async{
 }
 
 Future<void> updateUserField(String field, dynamic newValue)async{
-  print(PuzzleUser().user);
   if(!PuzzleUser().user!.isAnonymous){
     await users.doc(PuzzleUser().user!.uid).update({field: newValue});
   }
@@ -73,8 +73,8 @@ List<Map<String, dynamic>> _withRanks(List<Map<String, dynamic>> list){
   return list;
 }
 
-Future<Game> getMultiPlayerGame(Game game) async{
-  var docs  = (await games.where("status", isEqualTo: 1).where("mode", isEqualTo: game.mode).where("difficulty", isEqualTo: game.difficulty).where("firstPlayerTrophyCount", isLessThan: PuzzleUser().trophyCount + 200).where("firstPlayerTrophyCount", isGreaterThan: PuzzleUser().trophyCount - 200).where("lastUpdate", isGreaterThan: DateTime.now().toUtc().millisecondsSinceEpoch - 3000).limit(1).get()).docs;
+Future<Game?> getMultiPlayerGame(Game game) async{
+  var docs  = (await games.where("status", isEqualTo: 1).where("mode", isEqualTo: game.mode).where("difficulty", isEqualTo: game.difficulty).where("lastUpdate", isGreaterThan: DateTime.now().toUtc().millisecondsSinceEpoch - 3000).limit(1).get()).docs;
   if(docs.length == 0){
    return await _getNewGame(game);
   }
@@ -83,15 +83,18 @@ Future<Game> getMultiPlayerGame(Game game) async{
   }
 }
 
-Future<Game> getWithFriendGame(Game? game, int? gameId) async{
+Future<Game?> getWithFriendGame(Game? game, int? gameId) async{
   if(game != null){
     return await _getNewGame(game);
   }
   else{
     List<QueryDocumentSnapshot<Object?>> docs;
     do{
-    docs = (await games.where("gameId", isEqualTo: gameId).where("lastUpdate", isGreaterThan: DateTime.now().toUtc().millisecondsSinceEpoch - 3000).limit(1).get()).docs;}
-    while(docs.length == 0);
+    docs = (await games.where("gameId", isEqualTo: gameId).where("lastUpdate", isGreaterThan: DateTime.now().toUtc().millisecondsSinceEpoch - 3000).limit(1).get()).docs;
+    if(docs.length == 0){
+      await Future.delayed(Duration(seconds: 2,),);
+    }}
+    while(docs.length == 0 && FindingOpponentDialog.isActive);
     return _getExistingGame(docs);
   }
 }
@@ -105,10 +108,10 @@ Future<String> postGame(Game game) async{
   return (await games.add(game.toMap())).id;
 }
 
-Future<Game> _getNewGame(Game game) async{
+Future<Game?> _getNewGame(Game game) async{
   game.lastUpdate = DateTime.now().toUtc().millisecondsSinceEpoch;
 String docId = await postGame(game);
-    while(true){
+    while(true && FindingOpponentDialog.isActive){
       await Future.delayed(Duration(seconds: 3,),);
       Game updatedGame = await getGameById(docId);
       if(updatedGame.status == 2){
@@ -119,6 +122,8 @@ String docId = await postGame(game);
         await updateGameField({"lastUpdate": DateTime.now().toUtc().millisecondsSinceEpoch}, docId);
       }
     }
+    return null;
+    
 }
 
 Future<Game> _getExistingGame(List<QueryDocumentSnapshot<Object?>> docs) async{

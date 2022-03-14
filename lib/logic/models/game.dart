@@ -82,7 +82,7 @@ class Game {
     );
   }
 
-  static Future<Game> multiPlayer(int difficulty) async {
+  static Future<Game?> multiPlayer(int difficulty) async {
     PolynomialPuzzle puzzle = PolynomialPuzzle.random(degree: difficulty);
     Game game = Game(
       mode: 2,
@@ -97,7 +97,7 @@ class Game {
     return await BackEnd().getMultiPlayerGame(game);
   }
 
-  static Future<Game> withFriend(int difficulty, int gameId, bool isNew) async{
+  static Future<Game?> withFriend(int difficulty, int gameId, bool isNew) async{
     if(isNew){
     PolynomialPuzzle puzzle = PolynomialPuzzle.random(degree: difficulty);
     Game game = Game(mode: 3, difficulty: difficulty, firstPlayerName: PuzzleUser().name, firstPlayerTrophyCount: PuzzleUser().trophyCount, status: 1, firstPlayerPuzzle: puzzle, secondPlayerPuzzle: puzzle, gameId: gameId, );

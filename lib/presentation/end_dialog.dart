@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:polynom_puzzle/constants/sizes.dart';
-import 'package:polynom_puzzle/presentation/playing.dart';
 import 'package:polynom_puzzle/presentation/pokes.dart';
 
 import '../function_colors.dart';

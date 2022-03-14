@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:polynom_puzzle/presentation/textStyles/white_bold_text.dart';
 
 import '../constants/sizes.dart';
 

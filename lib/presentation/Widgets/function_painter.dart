@@ -24,8 +24,10 @@ class FunctionPainter extends CustomPainter {
     maxX = size.width/Visualization.pixelPerUnit/2;
     maxY = size.height/Visualization.pixelPerUnit/2;
     if(opponentFunction != null){
-      paintFunction(canvas, size, opponentFunction!, Colors.blue);
+      functionPaint..strokeWidth = 1.5;
+      paintFunction(canvas, size, opponentFunction!, Colors.grey.shade700);
     }
+    functionPaint..strokeWidth = 3;
     paintFunction(canvas, size, expectedFunction, Colors.black);
     paintFunction(canvas, size, currentFunction, FunctionColors.one);
   }
@@ -70,7 +72,6 @@ class FunctionPainter extends CustomPainter {
       
       }
     }
-    print("Hallo");
   }
 
   double toFuncX(double x, Size size) {
