@@ -74,7 +74,7 @@ List<Map<String, dynamic>> _withRanks(List<Map<String, dynamic>> list){
 }
 
 Future<Game> getMultiPlayerGame(Game game) async{
-  var docs  = (await games.where("status", isEqualTo: 1).where("mode", isEqualTo: game.mode).where("difficulty", isEqualTo: game.difficulty).where("firstPlayerTrophyCount", isLessThan: PuzzleUser().trophyCount + 200).where("firstPlayerTrophyCount", isGreaterThan: PuzzleUser().trophyCount - 200).limit(1).get()).docs;
+  var docs  = (await games.where("status", isEqualTo: 1).where("mode", isEqualTo: game.mode).where("difficulty", isEqualTo: game.difficulty).where("firstPlayerTrophyCount", isLessThan: PuzzleUser().trophyCount + 200).where("firstPlayerTrophyCount", isGreaterThan: PuzzleUser().trophyCount - 200).where("lastUpdate", isGreaterThan: DateTime.now().toUtc().millisecondsSinceEpoch - 3000).limit(1).get()).docs;
   if(docs.length == 0){
    return await _getNewGame(game);
   }
@@ -88,10 +88,10 @@ Future<Game> getWithFriendGame(Game? game, int? gameId) async{
     return await _getNewGame(game);
   }
   else{
-    var docs = (await games.where("gameId", isEqualTo: gameId).limit(1).get()).docs;
-    if(docs.length == 0){
-      throw Exception("No Game found");
-    }
+    List<QueryDocumentSnapshot<Object?>> docs;
+    do{
+    docs = (await games.where("gameId", isEqualTo: gameId).where("lastUpdate", isGreaterThan: DateTime.now().toUtc().millisecondsSinceEpoch - 3000).limit(1).get()).docs;}
+    while(docs.length == 0);
     return _getExistingGame(docs);
   }
 }
@@ -106,6 +106,7 @@ Future<String> postGame(Game game) async{
 }
 
 Future<Game> _getNewGame(Game game) async{
+  game.lastUpdate = DateTime.now().toUtc().millisecondsSinceEpoch;
 String docId = await postGame(game);
     while(true){
       await Future.delayed(Duration(seconds: 3,),);
@@ -113,6 +114,9 @@ String docId = await postGame(game);
       if(updatedGame.status == 2){
         updatedGame.docId = docId;
         return updatedGame;
+      }
+      else{
+        await updateGameField({"lastUpdate": DateTime.now().toUtc().millisecondsSinceEpoch}, docId);
       }
     }
 }

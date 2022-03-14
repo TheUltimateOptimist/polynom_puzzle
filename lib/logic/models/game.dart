@@ -19,6 +19,7 @@ class Game {
   Puzzle firstPlayerPuzzle;
   Puzzle? secondPlayerPuzzle;
   String? docId;
+  int? lastUpdate;
 
   Game({
     required this.mode,
@@ -32,6 +33,7 @@ class Game {
     this.secondPlayerPuzzle,
     required this.gameId,
     this.docId,
+    this.lastUpdate,
   });
 
   Map<String, dynamic> toMap() {
@@ -46,6 +48,7 @@ class Game {
       "gameId": gameId,
       "firstPlayerPuzzle": firstPlayerPuzzle.toMap(),
       "secondPlayerPuzzle": secondPlayerPuzzle?.toMap(),
+      "lastUpdate": lastUpdate,
     };
   }
 
@@ -61,6 +64,7 @@ class Game {
       firstPlayerPuzzle: PolynomialPuzzle.fromMap(map["firstPlayerPuzzle"]),
       secondPlayerPuzzle: PolynomialPuzzle.fromMap(map["secondPlayerPuzzle"]),
       gameId: map["gameId"],
+      lastUpdate: map["lastUpdate"],
     );
   }
 
