@@ -160,7 +160,7 @@ Game updatedGame =  await BackEnd().getGameById(docId!);
 
   Future<void> syncOwnPuzzle() async{
     if(isInverted){
-      await BackEnd().updateGameField({"seconPlayerPuzzle": secondPlayerPuzzle_!.toMap()}, docId!);
+      await BackEnd().updateGameField({"secondPlayerPuzzle": secondPlayerPuzzle_!.toMap()}, docId!);
     }
     else{
     await BackEnd().updateGameField({"firstPlayerPuzzle": firstPlayerPuzzle_.toMap()}, docId!);}
